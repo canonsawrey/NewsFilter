@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">PremierLeagueNewsFilter</string>
+    <string name="watched">Watched</string>
+    <string name="feed">Feed</string>
+    <string name="preferences">Preferences</string>
+</resources>
