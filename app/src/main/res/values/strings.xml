@@ -3,4 +3,6 @@
     <string name="watched">Watched</string>
     <string name="feed">Feed</string>
     <string name="preferences">Preferences</string>
+    <string name="watched_players">Watched Players</string>
+    <string name="formatted_player_name">%s, %s</string>
 </resources>

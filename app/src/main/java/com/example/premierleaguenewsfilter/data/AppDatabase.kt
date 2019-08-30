@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [DatabasePlayerItem::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun itemDao(): DatabaseListItemDao
+    abstract fun playerDao(): DatabasePlayerItemDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null

@@ -27,7 +27,7 @@ class DashboardActivity : AppCompatActivity() {
     private fun setupBottomNavigator() {
         navigator = BottomNavigator.onCreate(
             fragmentContainer = R.id.fragment_container,
-            bottomNavigationView = findViewById(R.id.bottomnav_view),
+            bottomNavigationView = findViewById(R.id.bottom_nav_view),
             rootFragmentsFactory = mapOf(
                 R.id.watched to { WatchedFragment() },
                 R.id.feed to { FeedFragment() },
