@@ -1,18 +1,18 @@
 package com.example.premierleaguenewsfilter.data
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface DatabaseListItemDao {
-    @Query("SELECT * FROM DatabaseListItem")
-    suspend fun getAllItems(): List<DatabaseListItem>
+    @Query("SELECT * FROM DatabasePlayerItem")
+    suspend fun getAllPlayers(): List<DatabasePlayerItem>
 
     @Insert
-    suspend fun insert(item: DatabaseListItem): Long
+    suspend fun batchInsert(players: List<DatabasePlayerItem>)
 
-    @Query("DELETE FROM DatabaseListItem WHERE item_name=:name")
-    suspend fun remove(name: String)
+    @Query("UPDATE DatabasePlayerItem SET watched = :watched WHERE uid = :id")
+    suspend fun setWatched(id: Int, watched: Boolean)
 }
