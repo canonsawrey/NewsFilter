@@ -1,8 +1,6 @@
 package com.example.premierleaguenewsfilter.splash
 
-import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.dashboard.DashboardActivity
@@ -11,7 +9,6 @@ import com.example.premierleaguenewsfilter.mock.mockedPlayers
 import com.example.premierleaguenewsfilter.toDatabasePlayerItem
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -35,7 +32,6 @@ class SplashActivity : AppCompatActivity() {
     private fun loadPremierLeaguePlayers() {
         val db = AppDatabase.getInstance(application)
         GlobalScope.launch {
-            Log.d("Database", "Loaded")
             db.playerDao().clearTable()
             db.playerDao().batchInsert(mockedPlayers.map { it.toDatabasePlayerItem() })
         }

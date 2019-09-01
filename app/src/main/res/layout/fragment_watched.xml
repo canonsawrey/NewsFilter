@@ -55,10 +55,43 @@
 
     </FrameLayout>
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/watched_recycler"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/container">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/watched_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/empty_message"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/loading_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_duration="1000"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/player_item_placeholder" />
+                <include layout="@layout/player_item_placeholder" />
+                <include layout="@layout/player_item_placeholder" />
+                <include layout="@layout/player_item_placeholder" />
+                <include layout="@layout/player_item_placeholder" />
+                <include layout="@layout/player_item_placeholder" />
+                <include layout="@layout/player_item_placeholder" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </FrameLayout>
+
 </LinearLayout>

@@ -6,7 +6,7 @@ import com.example.premierleaguenewsfilter.data.DatabasePlayerItem
 import java.lang.IllegalArgumentException
 
 fun PlayerItem.toDatabasePlayerItem(): DatabasePlayerItem {
-    return DatabasePlayerItem(0,
+    return DatabasePlayerItem(this.uid,
         this.firstName,
         this.lastName,
         this.club,
@@ -15,7 +15,7 @@ fun PlayerItem.toDatabasePlayerItem(): DatabasePlayerItem {
 }
 
 fun String.toSoccerPosition(): SoccerPosition {
-    when (this) {
+    return when (this) {
         "FWD" -> SoccerPosition.FWD
         "Forward" -> SoccerPosition.FWD
         "MID" -> SoccerPosition.MID
@@ -24,6 +24,6 @@ fun String.toSoccerPosition(): SoccerPosition {
         "Defender" -> SoccerPosition.DEF
         "GK" -> SoccerPosition.GK
         "Goalkeeper" -> SoccerPosition.GK
+        else -> SoccerPosition.UNKNOWN
     }
-    throw IllegalArgumentException("Not a recognized position: $this")
 }

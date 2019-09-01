@@ -7,12 +7,13 @@ import com.example.premierleaguenewsfilter.data.AppDatabase
 import kotlinx.android.synthetic.main.player_item.view.*
 
 data class PlayerItem(
-    val uid: Int,
+    val uid: Long,
     val firstName: String,
     val lastName: String,
     val club: String,
     val position: SoccerPosition,
-    var watched: Boolean = false
+    var watched: Boolean = false,
+    val watchedToggle: ((Long, Boolean) -> Unit?)? = null
 ) : Item {
 
     private lateinit var mHolder: BaseViewHolder
@@ -20,9 +21,7 @@ data class PlayerItem(
 
     override fun layoutId(): Int = R.layout.player_item
 
-    override fun uniqueId(): Long {
-        TODO("not implemented")
-    }
+    override fun uniqueId(): Long = uid.toLong()
 
     override fun bind(holder: BaseViewHolder) {
         mHolder = holder
@@ -56,7 +55,7 @@ data class PlayerItem(
                 R.drawable.background_player_unselected)
             mHolder.itemView.watched_checkbox.isChecked = false
         }
-
+        watchedToggle?.invoke(uid, watched)
     }
 
 }

@@ -11,6 +11,5 @@ interface Item {
     fun bind(holder: BaseViewHolder, payloads: MutableList<Any>) {
         bind(holder)
     }
-
     fun spanSize(): Int = 1
 }

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_player_border">
+    android:background="@drawable/player_border_grey">
 
     <ImageView
         android:id="@+id/image"
@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_person" />
+        app:srcCompat="@drawable/ic_person"
+        android:tint="@color/grey"/>
 
     <LinearLayout
         android:id="@+id/player_details"
@@ -30,32 +31,39 @@
         <TextView
             android:id="@+id/name"
             android:textStyle="bold"
+            android:text="@string/placeholder_text"
+            android:textColor="@color/grey"
+            android:background="@color/grey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"/>
         <TextView
             android:id="@+id/position"
+            android:text="@string/placeholder_text"
+            android:textColor="@color/grey"
+            android:background="@color/grey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"/>
         <TextView
             android:id="@+id/club"
+            android:text="@string/placeholder_text"
+            android:textColor="@color/grey"
+            android:background="@color/grey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"/>
     </LinearLayout>
 
-    <CheckBox
+    <ImageView
         android:id="@+id/watched_checkbox"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="16dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:button="@drawable/selector_player_checkbox"
-        android:background="@drawable/background_player_checkbox">
-    </CheckBox>
+        android:background="@drawable/background_player_checkbox_grey">
+    </ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
