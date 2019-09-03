@@ -43,8 +43,7 @@ class WatchedFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         //viewModel = ViewModelProviders.of(this, factory)[WatchedViewModel::class.java]
-        viewModel = WatchedViewModel(requireActivity().application)
-        //ViewModelProviders.of(this)[WatchedViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[WatchedViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -70,12 +69,10 @@ class WatchedFragment : Fragment() {
                     showEmptyState()
                 } else {
                     adapter.submitList(list)
-                    Observable.timer(400, TimeUnit.MILLISECONDS)
+                    Observable.timer(350, TimeUnit.MILLISECONDS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                        showPlayers()
-                    }
+                        .subscribe{showPlayers()}
                 }
             }
         }
