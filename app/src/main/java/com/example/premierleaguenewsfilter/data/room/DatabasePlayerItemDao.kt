@@ -1,9 +1,8 @@
-package com.example.premierleaguenewsfilter.data
+package com.example.premierleaguenewsfilter.data.room
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 
 @Dao
 interface DatabasePlayerItemDao {
@@ -24,5 +23,8 @@ interface DatabasePlayerItemDao {
 
     @Query("DELETE FROM DatabasePlayerItem")
     fun clearTable()
+
+    @Query("SELECT * FROM DatabasePlayerItem WHERE watched = 1")
+    suspend fun getWatchedPlayers(): List<DatabasePlayerItem>
 
 }

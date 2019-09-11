@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 <item
     android:state_enabled="false"
-    android:drawable="@drawable/player_border_grey">
+    android:drawable="@drawable/border_grey">
 </item>
 
 <item>

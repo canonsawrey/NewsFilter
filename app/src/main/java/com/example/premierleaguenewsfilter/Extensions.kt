@@ -2,15 +2,25 @@ package com.example.premierleaguenewsfilter
 
 import com.example.premierleaguenewsfilter.dashboard.watched.PlayerItem
 import com.example.premierleaguenewsfilter.dashboard.watched.SoccerPosition
-import com.example.premierleaguenewsfilter.data.DatabasePlayerItem
-import java.lang.IllegalArgumentException
+import com.example.premierleaguenewsfilter.data.room.DatabasePlayerItem
 
 fun PlayerItem.toDatabasePlayerItem(): DatabasePlayerItem {
-    return DatabasePlayerItem(this.uid,
+    return DatabasePlayerItem(
+        this.uid,
         this.firstName,
         this.lastName,
         this.club,
         this.position.toString(),
+        this.watched
+    )
+}
+
+fun DatabasePlayerItem.toPlayerItem(): PlayerItem {
+    return PlayerItem(this.uid,
+        this.firstName,
+        this.lastName,
+        this.club,
+        this.position.toSoccerPosition(),
         this.watched)
 }
 

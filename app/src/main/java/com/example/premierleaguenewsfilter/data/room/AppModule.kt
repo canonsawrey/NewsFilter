@@ -1,4 +1,4 @@
-package com.example.premierleaguenewsfilter.data
+package com.example.premierleaguenewsfilter.data.room
 
 import android.app.Application
 import dagger.Module

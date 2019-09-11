@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.dashboard.DashboardActivity
-import com.example.premierleaguenewsfilter.data.AppDatabase
+import com.example.premierleaguenewsfilter.data.room.AppDatabase
 import com.example.premierleaguenewsfilter.mock.mockedPlayers
 import com.example.premierleaguenewsfilter.toDatabasePlayerItem
 import io.reactivex.Observable

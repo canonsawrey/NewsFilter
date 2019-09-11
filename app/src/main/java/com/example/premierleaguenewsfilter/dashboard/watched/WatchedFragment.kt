@@ -1,37 +1,24 @@
 package com.example.premierleaguenewsfilter.dashboard.watched
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.common.BaseAdapter
-import com.example.premierleaguenewsfilter.dashboard.DashboardActivity
-import com.example.premierleaguenewsfilter.data.AppDatabase
-import com.example.premierleaguenewsfilter.data.DatabasePlayerItem
-import com.example.premierleaguenewsfilter.mock.mockedPlayers
-import com.example.premierleaguenewsfilter.toSoccerPosition
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_watched.*
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class WatchedFragment : Fragment() {
 
@@ -41,8 +28,6 @@ class WatchedFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //viewModel = ViewModelProviders.of(this, factory)[WatchedViewModel::class.java]
         viewModel = ViewModelProviders.of(this)[WatchedViewModel::class.java]
     }
 
@@ -80,9 +65,12 @@ class WatchedFragment : Fragment() {
 
     private fun showPlayers() {
         TransitionManager.beginDelayedTransition(container, fadeOutTransition)
-        loading_state.visibility = View.INVISIBLE
-        watched_recycler.visibility = View.VISIBLE
-        empty_state.visibility = View.INVISIBLE
+        //TODO move this error catching to inside the observable timer
+        try {
+            loading_state.visibility = View.INVISIBLE
+            watched_recycler.visibility = View.VISIBLE
+            empty_state.visibility = View.INVISIBLE
+        } catch (e: Exception) { }
     }
 
     private fun showEmptyState() {

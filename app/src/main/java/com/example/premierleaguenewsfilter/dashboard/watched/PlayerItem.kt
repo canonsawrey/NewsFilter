@@ -3,7 +3,6 @@ package com.example.premierleaguenewsfilter.dashboard.watched
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.common.BaseViewHolder
 import com.example.premierleaguenewsfilter.common.Item
-import com.example.premierleaguenewsfilter.data.AppDatabase
 import kotlinx.android.synthetic.main.player_item.view.*
 
 data class PlayerItem(
@@ -17,11 +16,10 @@ data class PlayerItem(
 ) : Item {
 
     private lateinit var mHolder: BaseViewHolder
-    lateinit var db: AppDatabase
 
     override fun layoutId(): Int = R.layout.player_item
 
-    override fun uniqueId(): Long = uid.toLong()
+    override fun uniqueId(): Long = uid
 
     override fun bind(holder: BaseViewHolder) {
         mHolder = holder

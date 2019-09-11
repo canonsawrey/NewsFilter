@@ -5,14 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.premierleaguenewsfilter.common.Store
-import com.example.premierleaguenewsfilter.data.AppDatabase
-import com.example.premierleaguenewsfilter.data.DatabasePlayerItem
+import com.example.premierleaguenewsfilter.data.room.AppDatabase
+import com.example.premierleaguenewsfilter.data.room.DatabasePlayerItem
 import com.example.premierleaguenewsfilter.toSoccerPosition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WatchedViewModel(app: Application): AndroidViewModel(app) {
     private val db = AppDatabase.getInstance(app.applicationContext)
@@ -51,8 +49,7 @@ class WatchedViewModel(app: Application): AndroidViewModel(app) {
             dbPlayer.lastName,
             dbPlayer.club,
             dbPlayer.position.toSoccerPosition(),
-            dbPlayer.watched,
-            {uid, tog -> toggleWatched(uid, tog)}
-            )
+            dbPlayer.watched)
+        { uid, tog -> toggleWatched(uid, tog) }
     }
 }
