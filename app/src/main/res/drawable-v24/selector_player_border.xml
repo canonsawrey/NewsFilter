@@ -12,7 +12,7 @@
             android:radius="0dp" />
         <stroke
             android:width="3dp"
-            android:color="@color/colorAccent2" />
+            android:color="@color/colorAccent" />
     </shape>
 </item>
 </selector>

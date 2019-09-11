@@ -36,7 +36,7 @@ class FeedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.news.observe(viewLifecycleOwner, Observer { receiveNewsList(it) })
-        viewModel.retrieveWatchedPlayers()
+        viewModel.retrievePlayerNews()
         setupRecycler()
     }
 

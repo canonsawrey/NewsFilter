@@ -21,12 +21,22 @@ class FeedViewModel(app: Application): AndroidViewModel(app) {
         return db.playerDao().getWatchedPlayers().map { it.toPlayerItem() }
     }
 
-    fun retrievePlayerNews(list: List<PlayerItem>) {
+    fun retrievePlayerNews() {
         viewModelScope.launch {
-            val watchedPlayers = async (Dispatchers.IO){
+            val watchedPlayers = async(Dispatchers.IO) {
                 retrieveWatchedPlayers()
             }
-            watchedPlayers.await()
+            val news = async(Dispatchers.IO) {
+                search(watchedPlayers.await())
+            }
+            _news.value = news.await()
+        }
+    }
 
+    private fun search(players: List<PlayerItem>): List<NewsItem> {
+        return players.map { NewsItem(it.firstName, "Twitter") }
     }
 }
+
+
+

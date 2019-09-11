@@ -36,4 +36,7 @@ fun String.toSoccerPosition(): SoccerPosition {
         "Goalkeeper" -> SoccerPosition.GK
         else -> SoccerPosition.UNKNOWN
     }
+
+    TODO("Add 'powered by newsapi' or w.e.t.f. they wanted")
+    TODO("Hide API key")
 }
