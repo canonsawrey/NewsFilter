@@ -44,6 +44,7 @@ class FeedFragment : Fragment() {
         feed_recycler.layoutManager = LinearLayoutManager(requireContext())
         feed_recycler.adapter = adapter
         feed_recycler.itemAnimator = DefaultItemAnimator()
+
     }
 
     private fun receiveNewsList(list: List<NewsItem>?) {

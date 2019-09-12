@@ -30,14 +30,14 @@ class FeedViewModel(app: Application): AndroidViewModel(app) {
                 retrieveWatchedPlayers()
             }
             val news = async(Dispatchers.IO) {
-                //val player1 = watchedPlayers.await()[0]
-                //val keyword = "${player1.firstName}%${player1.lastName}"
-                val keyword = "France"
+                val player1 = watchedPlayers.await()[0]
+                val keyword = "${player1.firstName}+${player1.lastName}"
+                Log.d("retrieved_news", keyword)
                 NewsApiRepository.getPlayerNewsRetrofit(keyword)
             }
             val retrievedNews = news.await()
             if (retrievedNews.isSuccessful) {
-                Log.d("retrieved_news", retrievedNews.body().toString())
+                _news.value = retrievedNews.body()?.toNewsItem()
             }
         }
     }

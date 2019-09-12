@@ -5,9 +5,14 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsApiService {
-    @GET suspend fun getPlayerStories(
+    @GET ("everything")
+    suspend fun getPlayerStories(
         @Query("q") searchKeyword: String,
-        @Query("apiKey") apiKey: String
+        @Query("apiKey") apiKey: String,
+        @Query("language") language: String,
+        @Query("from") from: String,
+        @Query("to") to: String,
+        @Query("sortBy") sort: String
     ): Response<NewsApiItem>
 
 //    @GET("q={keyword}&apiKey={apiKey}")

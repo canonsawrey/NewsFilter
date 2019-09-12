@@ -7,4 +7,5 @@
     <string name="formatted_player_name">%s, %s</string>
     <string name="empty_message">No matching players</string>
     <string name="placeholder_text">PLACEHOLDER</string>
+    <string name="read_more">Tap to read more</string>
 </resources>

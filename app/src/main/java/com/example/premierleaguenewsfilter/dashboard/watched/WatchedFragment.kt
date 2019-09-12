@@ -54,10 +54,7 @@ class WatchedFragment : Fragment() {
                     showEmptyState()
                 } else {
                     adapter.submitList(list)
-                    Observable.timer(350, TimeUnit.MILLISECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe{showPlayers()}
+                    showPlayers()
                 }
             }
         }
@@ -65,12 +62,9 @@ class WatchedFragment : Fragment() {
 
     private fun showPlayers() {
         TransitionManager.beginDelayedTransition(container, fadeOutTransition)
-        //TODO move this error catching to inside the observable timer
-        try {
-            loading_state.visibility = View.INVISIBLE
-            watched_recycler.visibility = View.VISIBLE
-            empty_state.visibility = View.INVISIBLE
-        } catch (e: Exception) { }
+        loading_state.visibility = View.INVISIBLE
+        watched_recycler.visibility = View.VISIBLE
+        empty_state.visibility = View.INVISIBLE
     }
 
     private fun showEmptyState() {
