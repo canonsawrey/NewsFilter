@@ -1,10 +1,18 @@
 package com.example.premierleaguenewsfilter.data.newsapi
 
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface NewsApiService {
-    @GET("v2/everything?q={name}&apiKey=6743c75732f145538c1d4c0750a7e5cd")
-    fun getPlayerStories(@Path(value = "name") playerName: String): Call<NewsApiItem>
+    @GET suspend fun getPlayerStories(
+        @Query("q") searchKeyword: String,
+        @Query("apiKey") apiKey: String
+    ): Response<NewsApiItem>
+
+//    @GET("q={keyword}&apiKey={apiKey}")
+//    suspend fun getPlayerStories(
+//        keyword: String,
+//        apiKey: String
+//    ): Response<NewsApiItem>
 }

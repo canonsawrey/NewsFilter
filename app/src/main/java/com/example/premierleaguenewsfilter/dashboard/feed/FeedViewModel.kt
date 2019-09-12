@@ -1,11 +1,14 @@
 package com.example.premierleaguenewsfilter.dashboard.feed
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.premierleaguenewsfilter.dashboard.watched.PlayerItem
+import com.example.premierleaguenewsfilter.data.newsapi.NewsApiRepository
+import com.example.premierleaguenewsfilter.data.newsapi.NewsApiService
 import com.example.premierleaguenewsfilter.data.room.AppDatabase
 import com.example.premierleaguenewsfilter.toPlayerItem
 import kotlinx.coroutines.Dispatchers
@@ -27,14 +30,16 @@ class FeedViewModel(app: Application): AndroidViewModel(app) {
                 retrieveWatchedPlayers()
             }
             val news = async(Dispatchers.IO) {
-                search(watchedPlayers.await())
+                //val player1 = watchedPlayers.await()[0]
+                //val keyword = "${player1.firstName}%${player1.lastName}"
+                val keyword = "France"
+                NewsApiRepository.getPlayerNewsRetrofit(keyword)
             }
-            _news.value = news.await()
+            val retrievedNews = news.await()
+            if (retrievedNews.isSuccessful) {
+                Log.d("retrieved_news", retrievedNews.body().toString())
+            }
         }
-    }
-
-    private fun search(players: List<PlayerItem>): List<NewsItem> {
-        return players.map { NewsItem(it.firstName, "Twitter") }
     }
 }
 
