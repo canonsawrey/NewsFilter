@@ -5,12 +5,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.IdRes
 import androidx.core.app.ActivityOptionsCompat
 import com.example.premierleaguenewsfilter.R
-import com.example.premierleaguenewsfilter.dashboard.feed.FeedFragment
+import com.example.premierleaguenewsfilter.dashboard.home.HomeFragment
 import com.example.premierleaguenewsfilter.dashboard.preferences.PreferencesFragment
-import com.example.premierleaguenewsfilter.dashboard.watched.WatchedFragment
+import com.example.premierleaguenewsfilter.dashboard.edit_feeds.EditFeedsFragment
 import com.pandora.bottomnavigator.BottomNavigator
 
 class DashboardActivity : AppCompatActivity() {
@@ -29,11 +28,11 @@ class DashboardActivity : AppCompatActivity() {
             fragmentContainer = R.id.fragment_container,
             bottomNavigationView = findViewById(R.id.bottom_nav_view),
             rootFragmentsFactory = mapOf(
-                R.id.watched to { WatchedFragment() },
-                R.id.feed to { FeedFragment() },
+                R.id.home to { HomeFragment() },
+                R.id.editsFeeds to { EditFeedsFragment() },
                 R.id.preferences to { PreferencesFragment() }
             ),
-            defaultTab = R.id.feed,
+            defaultTab = R.id.home,
             activity = this
         )
     }

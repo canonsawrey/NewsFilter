@@ -15,6 +15,6 @@ public abstract class DatabaseModule {
     @Provides
     @Singleton
     static AppDatabase providesDatabase(Application app) {
-        return Room.databaseBuilder(app, AppDatabase.class, "players-db").build();
+        return Room.databaseBuilder(app, AppDatabase.class, "feeds-db").build();
     }
 }

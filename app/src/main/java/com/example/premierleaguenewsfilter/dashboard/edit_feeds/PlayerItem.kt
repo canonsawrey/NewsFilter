@@ -1,10 +1,11 @@
-package com.example.premierleaguenewsfilter.dashboard.watched
+package com.example.premierleaguenewsfilter.dashboard.edit_feeds
 
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.common.BaseViewHolder
 import com.example.premierleaguenewsfilter.common.Item
 import kotlinx.android.synthetic.main.player_item.view.*
 
+@Deprecated("No longer used with generic app")
 data class PlayerItem(
     val uid: Long,
     val firstName: String,

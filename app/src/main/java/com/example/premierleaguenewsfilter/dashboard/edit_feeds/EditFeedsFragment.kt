@@ -1,4 +1,4 @@
-package com.example.premierleaguenewsfilter.dashboard.watched
+package com.example.premierleaguenewsfilter.dashboard.edit_feeds
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,22 +13,17 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.common.BaseAdapter
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_watched.*
-import java.lang.Exception
-import java.util.concurrent.TimeUnit
 
-class WatchedFragment : Fragment() {
+class EditFeedsFragment : Fragment() {
 
     //@Inject lateinit var factory: ViewModelProvider.Factory
-    private lateinit var viewModel: WatchedViewModel
-    private val adapter = BaseAdapter<PlayerItem>()
+    private lateinit var viewModel: EditFeedsViewModel
+    private val adapter = BaseAdapter<EditFeedSelectorItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[WatchedViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[EditFeedsViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -40,13 +35,12 @@ class WatchedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.players.observe(viewLifecycleOwner, Observer { receiveList(it) })
+        viewModel.lists.observe(viewLifecycleOwner, Observer { receiveList(it) })
         viewModel.getAllPlayers()
         setupRecycler()
-        setupToolAndSearchBar()
     }
 
-    private fun receiveList(list: List<PlayerItem>?) {
+    private fun receiveList(list: List<EditFeedSelectorItem>?) {
         when (list) {
             null -> showLoadingState()
             else -> {
@@ -63,54 +57,26 @@ class WatchedFragment : Fragment() {
     private fun showPlayers() {
         TransitionManager.beginDelayedTransition(container, fadeOutTransition)
         loading_state.visibility = View.INVISIBLE
-        watched_recycler.visibility = View.VISIBLE
+        feed_selector_recycler.visibility = View.VISIBLE
         empty_state.visibility = View.INVISIBLE
     }
 
     private fun showEmptyState() {
         TransitionManager.beginDelayedTransition(container, fadeOutTransition)
         loading_state.visibility = View.INVISIBLE
-        watched_recycler.visibility = View.INVISIBLE
+        feed_selector_recycler.visibility = View.INVISIBLE
         empty_state.visibility = View.VISIBLE
     }
 
     private fun showLoadingState() {
         loading_state.visibility = View.VISIBLE
-        watched_recycler.visibility = View.INVISIBLE
+        feed_selector_recycler.visibility = View.INVISIBLE
         empty_state.visibility = View.INVISIBLE
     }
 
     private fun setupRecycler() {
-        watched_recycler.layoutManager = LinearLayoutManager(requireContext())
-        watched_recycler.adapter = adapter
-        watched_recycler.itemAnimator = null
-    }
-
-    private fun setupToolAndSearchBar() {
-        search_bar.visibility = View.INVISIBLE
-        search.setOnClickListener {
-            toolbar.visibility = View.INVISIBLE
-            search_bar.visibility = View.VISIBLE
-            search_bar.isIconified = false
-            search_bar.requestFocus()
-            //bottom_nav_view.visibility = View.GONE
-        }
-        search_bar.setOnCloseListener {
-            toolbar.visibility = View.VISIBLE
-            search_bar.visibility = View.INVISIBLE
-            //bottom_nav_view.visibility = View.VISIBLE
-            true
-        }
-        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel.performSearch("%${search_bar.query}%")
-                return false
-            } }
-        )
+        feed_selector_recycler.layoutManager = LinearLayoutManager(requireContext())
+        feed_selector_recycler.adapter = adapter
     }
 
     companion object {

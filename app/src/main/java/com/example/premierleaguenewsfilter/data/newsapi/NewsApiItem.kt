@@ -1,6 +1,6 @@
 package com.example.premierleaguenewsfilter.data.newsapi
 
-import com.example.premierleaguenewsfilter.dashboard.feed.NewsItem
+import com.example.premierleaguenewsfilter.dashboard.home.NewsItem
 
 data class NewsApiItem(
     val status: String,

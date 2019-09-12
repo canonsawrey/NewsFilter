@@ -1,9 +1,8 @@
-package com.example.premierleaguenewsfilter.dashboard.feed
+package com.example.premierleaguenewsfilter.dashboard.home
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.graphics.alpha
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.common.BaseViewHolder
 import com.example.premierleaguenewsfilter.common.Item

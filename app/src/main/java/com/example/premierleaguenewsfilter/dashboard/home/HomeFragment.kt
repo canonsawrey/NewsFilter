@@ -1,4 +1,4 @@
-package com.example.premierleaguenewsfilter.dashboard.feed
+package com.example.premierleaguenewsfilter.dashboard.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
 import com.example.premierleaguenewsfilter.R
 import com.example.premierleaguenewsfilter.common.BaseAdapter
-import com.example.premierleaguenewsfilter.dashboard.watched.WatchedFragment.Companion.fadeOutTransition
+import com.example.premierleaguenewsfilter.dashboard.edit_feeds.EditFeedsFragment.Companion.fadeOutTransition
 import kotlinx.android.synthetic.main.fragment_feed.*
 import kotlinx.android.synthetic.main.fragment_feed.empty_state
 import kotlinx.android.synthetic.main.fragment_feed.loading_state
 
-class FeedFragment : Fragment() {
-    private lateinit var viewModel: FeedViewModel
+class HomeFragment : Fragment() {
+    private lateinit var viewModel: HomeViewModel
     private val adapter = BaseAdapter<NewsItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[FeedViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[HomeViewModel::class.java]
     }
 
     override fun onCreateView(

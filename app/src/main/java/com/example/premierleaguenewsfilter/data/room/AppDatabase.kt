@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [DatabasePlayerItem::class], version = 1)
+@Database(entities = [NewsFeedDatabaseItem::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun playerDao(): DatabasePlayerItemDao
+    abstract fun playerDao(): NewsFeedsDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null

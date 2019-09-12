@@ -1,7 +1,7 @@
 package com.example.premierleaguenewsfilter.mock
 
-import com.example.premierleaguenewsfilter.dashboard.watched.PlayerItem
-import com.example.premierleaguenewsfilter.dashboard.watched.SoccerPosition
+import com.example.premierleaguenewsfilter.dashboard.edit_feeds.PlayerItem
+import com.example.premierleaguenewsfilter.dashboard.edit_feeds.SoccerPosition
 
 val mockedPlayers = listOf(
     PlayerItem(1,"Santiago", "Cazorla", "Arsenal", SoccerPosition.MID, false),

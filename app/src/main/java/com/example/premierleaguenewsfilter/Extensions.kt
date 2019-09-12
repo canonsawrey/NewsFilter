@@ -1,11 +1,11 @@
 package com.example.premierleaguenewsfilter
 
-import com.example.premierleaguenewsfilter.dashboard.watched.PlayerItem
-import com.example.premierleaguenewsfilter.dashboard.watched.SoccerPosition
-import com.example.premierleaguenewsfilter.data.room.DatabasePlayerItem
+import com.example.premierleaguenewsfilter.dashboard.edit_feeds.PlayerItem
+import com.example.premierleaguenewsfilter.dashboard.edit_feeds.SoccerPosition
+import com.example.premierleaguenewsfilter.data.room.NewsFeedDatabaseItem
 
-fun PlayerItem.toDatabasePlayerItem(): DatabasePlayerItem {
-    return DatabasePlayerItem(
+fun PlayerItem.toDatabasePlayerItem(): NewsFeedDatabaseItem {
+    return NewsFeedDatabaseItem(
         this.uid,
         this.firstName,
         this.lastName,
@@ -15,7 +15,7 @@ fun PlayerItem.toDatabasePlayerItem(): DatabasePlayerItem {
     )
 }
 
-fun DatabasePlayerItem.toPlayerItem(): PlayerItem {
+fun NewsFeedDatabaseItem.toPlayerItem(): PlayerItem {
     return PlayerItem(this.uid,
         this.firstName,
         this.lastName,
