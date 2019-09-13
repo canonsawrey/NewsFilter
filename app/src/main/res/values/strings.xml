@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PremierLeagueNewsFilter</string>
+    <string name="app_name">NewsFilter</string>
     <string name="watched">Watched</string>
     <string name="home">Home</string>
     <string name="preferences">Preferences</string>

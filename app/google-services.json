@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "894123904879",
+    "firebase_url": "https://newsfilter-c4c98.firebaseio.com",
+    "project_id": "newsfilter-c4c98",
+    "storage_bucket": "newsfilter-c4c98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894123904879:android:3de0017744de03796a629a",
+        "android_client_info": {
+          "package_name": "com.csawrey.newsfilter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894123904879-69l6k7cpm3qskam6njsmikqo5dnicinv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3RBwtS6Z-PGw3zBWF6HzHQIKL38cUDko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894123904879-69l6k7cpm3qskam6njsmikqo5dnicinv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

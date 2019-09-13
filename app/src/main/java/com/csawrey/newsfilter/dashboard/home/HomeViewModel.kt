@@ -23,6 +23,10 @@ class HomeViewModel(app: Application): AndroidViewModel(app) {
         return db.searchItemsDao().getAllSearchItems().map { it.toSearchItem() }
     }
 
+    fun receiveNews(list: List<NewsItem>) {
+        _news.value = list
+    }
+
     fun retrieveNews() {
         viewModelScope.launch {
             val defSearchItems = async(Dispatchers.IO) { retrieveSearchItems() }
