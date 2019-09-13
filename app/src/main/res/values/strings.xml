@@ -5,7 +5,7 @@
     <string name="preferences">Preferences</string>
     <string name="watched_players">Watched Players</string>
     <string name="formatted_player_name">%s, %s</string>
-    <string name="empty_message">No matching newsFeeds</string>
+    <string name="empty_message">No matching searches</string>
     <string name="placeholder_text">PLACEHOLDER</string>
     <string name="read_more">Tap to read more</string>
     <string name="edit_news_streams">Edit News Streams</string>
