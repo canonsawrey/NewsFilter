@@ -6,6 +6,7 @@ import android.net.Uri
 import com.csawrey.newsfilter.R
 import com.csawrey.newsfilter.common.BaseViewHolder
 import com.csawrey.newsfilter.common.Item
+import com.csawrey.newsfilter.data.room.StoredQueryResultItem
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class NewsItem (private val author: String?,
@@ -28,5 +29,13 @@ class NewsItem (private val author: String?,
         context.startActivity(intent)
     }
 
-
+    fun toStoredQueryResultItem(query: String): StoredQueryResultItem {
+        return StoredQueryResultItem(
+            0,
+            query,
+            this.author ?: "",
+            this.title,
+            this.description,
+            this.url)
+    }
 }
