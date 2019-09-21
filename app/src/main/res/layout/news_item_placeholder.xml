@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/colorAccentBlue" />
+        app:srcCompat="@color/grey" />
 
     <TextView
         android:id="@+id/news_text"
@@ -26,10 +26,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/grey"
+        android:background="@color/grey"
         android:ellipsize="end"
+        android:layout_marginBottom="16dp"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:text="@string/dummy_text_long"
         app:layout_constraintBottom_toTopOf="@+id/read_more"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/image"
@@ -39,12 +42,13 @@
         android:id="@+id/read_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/read_more"
+        android:text="@string/dummy_text_short"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:drawableEnd="@drawable/ic_chevron_right_blue"
         android:gravity="center"
-        android:padding="8dp"
-        android:textColor="@color/colorAccentBlue"/>
+        android:layout_margin="8dp"
+        android:padding="0dp"
+        android:textColor="@color/grey"
+        android:background="@color/grey"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

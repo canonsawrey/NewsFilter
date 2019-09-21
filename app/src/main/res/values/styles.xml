@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="StreamHeader" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="StreamHeader.Title" parent="StreamHeader">
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

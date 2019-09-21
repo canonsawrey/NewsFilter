@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#38003c</color>
-    <color name="colorPrimaryDark">#1F0023</color>
-    <color name="colorAccent">#e90052</color>
-    <color name="colorAccent2">#00ff85</color>
-    <color name="colorAccent3">#04f5ff</color>
+    <color name="colorPrimary">#111111</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#ffffff</color>
+    <color name="colorAccentBlueLight">#2196f3</color>
+    <color name="colorAccentBlue">#1976d2</color>
+    <color name="colorAccentBlueDark">#0d47a1</color>
     <color name="white">#ffffff</color>
     <color name="grey">#d3d3d3</color>
-    <color name="twitter">#00ACED</color>
+<!--    <color name="colorPrimary">#38003c</color>-->
+<!--    <color name="colorPrimaryDark">#1F0023</color>-->
+<!--    <color name="colorAccent">#e90052</color>-->
+<!--    <color name="colorAccent2">#00ff85</color>-->
+<!--    <color name="colorAccent3">#04f5ff</color>-->
+<!--    <color name="white">#ffffff</color>-->
+<!--    <color name="grey">#d3d3d3</color>-->
 </resources>
