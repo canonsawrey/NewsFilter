@@ -19,7 +19,10 @@ data class DatabaseNewsStream(
 data class DatabaseSearchItem(
     @PrimaryKey(autoGenerate = true) val uid: Long,
     val parent_stream: Long,
-    @ColumnInfo(name = "keyword") val keyword: String
+    @ColumnInfo(name = "keyword") val keyword: String,
+    @ColumnInfo(name = "sort") val sort: String,
+    @ColumnInfo(name = "weight") val weight: String,
+    @ColumnInfo(name = "daysOld") val daysOld: Int
 )
 
 @Entity(foreignKeys = [ForeignKey(entity = DatabaseSearchItem::class,
@@ -30,9 +33,9 @@ data class DatabaseSearchItem(
 data class DatabaseCachedStoryItem(
     @PrimaryKey(autoGenerate = true) val uid: Long,
     val parent_search_item: Long,
-    @ColumnInfo(name = "query") val query: String,
     @ColumnInfo(name = "author") val author: String,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "description") val description: String,
-    @ColumnInfo(name = "url") val url: String
+    @ColumnInfo(name = "url") val url: String,
+    @ColumnInfo(name = "imageUrl") val imageUrl: String
 )

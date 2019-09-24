@@ -17,7 +17,9 @@
         <androidx.appcompat.widget.SearchView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent"/>
+            android:layout_margin="14dp"
+            android:background="@drawable/rounded_accent_background"
+            app:iconifiedByDefault="false"/>
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
@@ -26,7 +28,7 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/stories_recycler"
+            android:id="@+id/news_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
@@ -15,10 +17,12 @@
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer"
+            tools:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 
     </FrameLayout>
+
 </LinearLayout>

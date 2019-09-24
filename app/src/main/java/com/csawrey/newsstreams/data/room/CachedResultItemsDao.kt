@@ -6,8 +6,8 @@ import androidx.room.Query
 
 @Dao
 interface CachedResultItemsDao {
-    @Query("SELECT * FROM DatabaseCachedStoryItem WHERE `query` = :keyword")
-    suspend fun getStoredQueryResults(keyword: String): List<DatabaseCachedStoryItem>
+    @Query("SELECT * FROM DatabaseCachedStoryItem WHERE `parent_search_item` = :parentId")
+    suspend fun getStoredQueryResults(parentId: Long): List<DatabaseCachedStoryItem>
 
     @Insert
     fun batchInsert(searches: List<DatabaseCachedStoryItem>)

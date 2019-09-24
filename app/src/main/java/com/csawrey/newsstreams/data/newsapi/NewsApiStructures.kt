@@ -1,6 +1,6 @@
 package com.csawrey.newsstreams.data.newsapi
 
-import com.csawrey.newsstreams.dashboard.streams.stream.NewsItem
+import com.csawrey.newsstreams.data.room.DatabaseCachedStoryItem
 
 data class NewsApiItem(
     val status: String,
@@ -8,16 +8,19 @@ data class NewsApiItem(
     val articles: List<Article>
 ) {
 
-    fun toNewsItem(): List<NewsItem> {
-        val stories = mutableListOf<NewsItem>()
+    fun toDatabaseCachedStoryItem(parentId: Long): List<DatabaseCachedStoryItem> {
+        val stories = mutableListOf<DatabaseCachedStoryItem>()
         for (i in articles) {
-            if (!i.title.isNullOrEmpty() && !i.description.isNullOrEmpty() && !i.url.isNullOrEmpty()) {
+            if (!i.title.isNullOrEmpty() && !i.description.isNullOrEmpty() && !i.url.isNullOrEmpty() && !i.urlToImage.isNullOrEmpty()) {
                 stories.add(
-                    NewsItem(
-                        i.author,
+                    DatabaseCachedStoryItem(
+                        0,
+                        parentId,
+                        i.author ?: "",
                         i.title,
                         i.description,
-                        i.url
+                        i.url,
+                        i.urlToImage
                     )
                 )
             }

@@ -12,14 +12,14 @@ object NewsApiRepository {
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build().create(NewsApiService::class.java)
 
-    suspend fun getNewsRetrofit(keywords: String): Response<NewsApiItem> =
+    suspend fun getNewsRetrofit(keywords: String, sortBy: String, daysAgo: Int): Response<NewsApiItem> =
         api.getStories(
             keywords,
             "6743c75732f145538c1d4c0750a7e5cd",
             "en",
-            daysAgo(2),
+            daysAgo(daysAgo),
             daysAgo(0),
-            "popularity",
+            sortBy,
             "25")
 
     private fun daysAgo(daysAgo: Int): String {
