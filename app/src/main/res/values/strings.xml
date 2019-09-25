@@ -30,5 +30,6 @@
     <string name="stream_name">Stream name</string>
     <string name="empty_name_error">Stream name required</string>
     <string name="keyword">Keyword(s)</string>
+    <string name="my_new_stream">My New Stream</string>
 
 </resources>

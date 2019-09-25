@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,7 +34,7 @@ class EditStreamActivity : AppCompatActivity() {
             viewModel.getSearchItems(parentStreamId!!)
             showLoading()
         } else {
-            showEditor()
+            displayItems(Pair(baseContext.resources.getString(R.string.my_new_stream), listOf()))
         }
     }
 
@@ -54,18 +55,25 @@ class EditStreamActivity : AppCompatActivity() {
         viewModel.searchItems.observe(this, Observer { displayItems(it) })
     }
 
-    private fun displayItems(list: List<EditorSearchItem>) {
-        if (list.isEmpty()) {
+    private fun displayItems(data: Pair<String, List<EditorSearchItem>>) {
+        if (data.second.isEmpty()) {
             adapter.submitList(listOf(
                 EditorSearchItem(0, "", Sort.RELEVANT, Weight.AVERAGE, 3),
                 AddItem { addRow() }
             ))
+        } else {
+            val tempList: MutableList<EditorItem> = data.second.toMutableList()
+            tempList.add(AddItem { addRow() })
+            adapter.submitList(tempList)
         }
+        stream_name_value.setText(data.first)
+        showEditor()
     }
 
     private fun addRow() {
-
+        Toast.makeText(baseContext, "Adding row! But not really...", Toast.LENGTH_SHORT).show()
     }
+
     private fun setupListeners() {
         save.setOnClickListener {
             if (stream_name_value.text.toString().isBlank()) {

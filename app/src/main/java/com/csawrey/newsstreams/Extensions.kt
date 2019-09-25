@@ -15,21 +15,21 @@ fun DatabaseSearchItem.toSearchItem() =
 fun DatabaseCachedStoryItem.toNewsItem() =
     NewsItem(this.author, this.title, this.description, this.url, this.imageUrl)
 
-private fun String.toSort(): Sort {
+fun String.toSort(): Sort {
     return when (this) {
         "relevancy" -> Sort.RELEVANT
         "popularity" -> Sort.POPULAR
         "publishedAt" -> Sort.RECENT
-        else -> Sort.POPULAR
+        else -> throw IllegalArgumentException("Unrecognized weight string: $this")
     }
 }
 
-private fun String.toWeight(): Weight {
+fun String.toWeight(): Weight {
     return when (this) {
         "small" -> Weight.SMALL
         "average" -> Weight.AVERAGE
         "large" -> Weight.LARGE
-        else -> Weight.AVERAGE
+        else -> throw IllegalArgumentException("Unrecognized weight string: $this")
     }
 }
 

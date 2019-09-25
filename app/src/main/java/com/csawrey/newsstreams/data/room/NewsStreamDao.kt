@@ -9,6 +9,9 @@ interface NewsStreamDao {
     @Query("SELECT * FROM DatabaseNewsStream")
     suspend fun getAllStreams(): List<DatabaseNewsStream>
 
+    @Query("SELECT name FROM DatabaseNewsStream WHERE uid = :uid")
+    suspend fun getStreamName(uid: Long): String
+
     @Insert
     fun batchInsert(searches: List<DatabaseNewsStream>)
 
