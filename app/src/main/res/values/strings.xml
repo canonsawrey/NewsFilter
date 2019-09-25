@@ -16,4 +16,17 @@
     <string name="create_new_stream">Create New Stream</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
+    <string name="clear_cache">Clear cache</string>
+    <string name="clearing_cache">Clearing cache</string>
+    <string name="please_wait">Please wait</string>
+    <string name="empty_single_stream_message">You\'re search parameters are too strict!\n\n\nClick the header above to broaden your search or add new parameters.</string>
+    <string name="empty_parameter_message">You have no search paramters!\n\n\nClick the header above to add new parameters.</string>
+    <string name="none">None</string>
+    <string name="add_stream">Create New Stream</string>
+    <string name="stream_editor">Stream Editor</string>
+    <string name="create">Create</string>
+    <string name="save">Save</string>
+    <string name="clear_story_cache">Clear article cache</string>
+    <string name="stream_name">Stream name</string>
+
 </resources>

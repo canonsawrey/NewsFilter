@@ -1,6 +1,8 @@
 package com.csawrey.newsstreams.dashboard.streams
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +11,19 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.dashboard.search.SearchItem
 import com.csawrey.newsstreams.dashboard.streams.single_stream.NewStreamFragment
 import com.csawrey.newsstreams.dashboard.streams.single_stream.SingleStreamFragment
 import kotlinx.android.synthetic.main.fragment_streams.*
+import java.lang.Exception
 
 class StreamsFragment : Fragment() {
 
     private lateinit var viewModel: StreamsViewModel
-    private lateinit var viewPagerAdapter: FragmentStatePagerAdapter
+    private lateinit var viewPagerAdapter: StreamPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +41,15 @@ class StreamsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         showLoadingState()
         viewModel.streams.observe(viewLifecycleOwner, Observer { receiveNewsList(it) })
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.retrieveStreams()
     }
 
-    private fun setupViewPager(map: Map<Int, Pair<String, List<SearchItem>>>) {
+    private fun setupViewPager(map: Map<Int, Triple<Long, String, List<SearchItem>>>) {
         viewPagerAdapter = StreamPagerAdapter(requireActivity().supportFragmentManager, map)
         stream_pager.adapter = viewPagerAdapter
     }
 
-    private fun receiveNewsList(map: Map<Int, Pair<String, List<SearchItem>>>) {
+    private fun receiveNewsList(map: Map<Int, Triple<Long, String, List<SearchItem>>>) {
         if (map.keys.isNotEmpty()) {
             setupViewPager(map)
             showNews()
@@ -56,22 +57,17 @@ class StreamsFragment : Fragment() {
     }
 
     private fun showLoadingState() {
-        shimmer.visibility = View.VISIBLE
-        shimmer.startShimmer()
+        placeholder.visibility = View.VISIBLE
         stream_pager.visibility = View.INVISIBLE
     }
 
     private fun showNews() {
-        shimmer.stopShimmer()
-        shimmer.visibility = View.INVISIBLE
+        TransitionManager.beginDelayedTransition(container, fadeOutTransition)
+        placeholder.visibility = View.INVISIBLE
         stream_pager.visibility = View.VISIBLE
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
-    private inner class StreamPagerAdapter(fm: FragmentManager, map: Map<Int, Pair<String, List<SearchItem>>>) :
+    private inner class StreamPagerAdapter(fm: FragmentManager, map: Map<Int, Triple<Long, String, List<SearchItem>>>) :
         FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         val mMap = map
@@ -82,9 +78,15 @@ class StreamsFragment : Fragment() {
             return if (position == count - 1) {
                 NewStreamFragment()
             } else {
-                SingleStreamFragment(mMap[position]!!.first,
-                    mMap[position]!!.second)
+                SingleStreamFragment(
+                    mMap[position]!!.first,
+                    mMap[position]!!.second,
+                    mMap[position]!!.third)
             }
         }
+    }
+
+    companion object {
+        val fadeOutTransition = Fade(Fade.OUT)
     }
 }

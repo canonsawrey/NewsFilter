@@ -1,5 +1,6 @@
 package com.csawrey.newsstreams.dashboard.streams.single_stream
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +13,14 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.BaseAdapter
+import com.csawrey.newsstreams.common.Sort
+import com.csawrey.newsstreams.common.Weight
 import com.csawrey.newsstreams.dashboard.search.SearchItem
+import com.csawrey.newsstreams.edit_stream.EditStreamActivity
 import kotlinx.android.synthetic.main.fragment_single_stream.*
 
 class SingleStreamFragment(
+    private val uid: Long,
     private val title: String,
     private val keywords: List<SearchItem>
 ) : Fragment() {
@@ -42,12 +47,27 @@ class SingleStreamFragment(
         stream_title.text = title
         showLoadingState()
         setupRecyclers()
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() {
+        header.setOnClickListener {
+            EditStreamActivity.launch(requireActivity())
+        }
     }
 
     private fun setupRecyclers() {
         keyword_recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         keyword_recycler.adapter = keywordAdapter
-        keywordAdapter.submitList(keywords)
+        if (keywords.isEmpty()) {
+            keywordAdapter.submitList(listOf(
+                SearchItem(0, requireContext().resources.getString(R.string.none),
+                    Sort.POPULAR, Weight.AVERAGE, 0))
+            )
+            receiveNewsList(listOf())
+        } else {
+            keywordAdapter.submitList(keywords)
+        }
 
         news_recycler.layoutManager = LinearLayoutManager(context)
         news_recycler.adapter = newsAdapter
@@ -55,16 +75,24 @@ class SingleStreamFragment(
 
     private fun receiveNewsList(list: List<NewsItem>) {
         if (list.isEmpty()) {
-            //TODO Implement empty list messaging asking user to broaden search terms
+            showEmptyState()
         } else {
             newsAdapter.submitList(list)
             showNews()
         }
+    }
 
+    private fun showEmptyState() {
+        TransitionManager.beginDelayedTransition(container, fadeOutTransition)
+        empty_state.visibility = View.VISIBLE
+        shimmer.visibility = View.INVISIBLE
+        shimmer.stopShimmer()
+        news_recycler.visibility = View.INVISIBLE
     }
 
     private fun showNews() {
         TransitionManager.beginDelayedTransition(container, fadeOutTransition)
+        empty_state.visibility = View.INVISIBLE
         shimmer.visibility = View.INVISIBLE
         shimmer.stopShimmer()
         news_recycler.visibility = View.VISIBLE
@@ -72,9 +100,19 @@ class SingleStreamFragment(
     }
 
     private fun showLoadingState() {
+        empty_state.visibility = View.INVISIBLE
         shimmer.visibility = View.VISIBLE
         shimmer.startShimmer()
         news_recycler.visibility = View.INVISIBLE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == EditStreamActivity.STREAM_CHANGED) {
+            data?.getStringExtra(EditStreamActivity.TITLE)?.let {
+                stream_title.text = it
+            }
+        }
     }
 
     companion object {

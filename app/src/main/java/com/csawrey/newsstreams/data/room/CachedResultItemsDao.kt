@@ -12,6 +12,6 @@ interface CachedResultItemsDao {
     @Insert
     fun batchInsert(searches: List<DatabaseCachedStoryItem>)
 
-    @Query("DELETE FROM DatabaseSearchItem")
+    @Query("DELETE FROM DatabaseCachedStoryItem")
     fun clearTable()
 }

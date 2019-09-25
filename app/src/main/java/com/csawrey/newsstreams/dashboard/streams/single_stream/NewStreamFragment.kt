@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.csawrey.newsstreams.R
+import com.csawrey.newsstreams.edit_stream.EditStreamActivity
 import kotlinx.android.synthetic.main.fragment_new_stream.*
 
 class NewStreamFragment : Fragment() {
@@ -19,13 +20,13 @@ class NewStreamFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_new_stream, container, false)
+        return inflater.inflate(R.layout.fragment_single_stream_add, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         add.setOnClickListener {
-            Toast.makeText(context, "Coming soon!", Toast.LENGTH_LONG).show()
+            EditStreamActivity.launch(requireActivity())
         }
     }
 }

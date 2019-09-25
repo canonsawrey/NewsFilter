@@ -12,12 +12,12 @@ import kotlinx.coroutines.*
 
 class StreamsViewModel(app: Application): AndroidViewModel(app) {
     private val db = AppDatabase.getInstance(app.applicationContext)
-    private val _streams = MutableLiveData<Map<Int, Pair<String, List<SearchItem>>>>()
-    val streams: LiveData<Map<Int, Pair<String, List<SearchItem>>>> = _streams
+    private val _streams = MutableLiveData<Map<Int, Triple<Long, String, List<SearchItem>>>>()
+    val streams: LiveData<Map<Int, Triple<Long, String, List<SearchItem>>>> = _streams
 
     fun retrieveStreams() {
 
-        val streamMap = mutableMapOf<Int, Pair<String, List<SearchItem>>>()
+        val streamMap = mutableMapOf<Int, Triple<Long, String, List<SearchItem>>>()
 
         viewModelScope.launch {
             //Get streams from DB
@@ -30,14 +30,14 @@ class StreamsViewModel(app: Application): AndroidViewModel(app) {
                     db.searchItemsDao().getStreamSearchItems(stream.value.uid)
                 }
                 streamMap[stream.index] =
-                    Pair(stream.value.name, searchTerms.map { it.toSearchItem() })
+                    Triple(stream.value.uid, stream.value.name, searchTerms.map { it.toSearchItem() })
             }
             receiveStreams(streamMap)
         }
     }
 
 
-    fun receiveStreams(map: Map<Int, Pair<String, List<SearchItem>>>) {
+    fun receiveStreams(map: Map<Int, Triple<Long, String, List<SearchItem>>>) {
         _streams.value = map
     }
 }

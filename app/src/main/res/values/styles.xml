@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -16,5 +16,23 @@
 
     <style name="StreamHeader.Title" parent="StreamHeader">
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AcceptButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:paddingTop">@dimen/button_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/button_vertical_padding</item>
+        <item name="android:layout_marginStart">@dimen/app_button_width_margin</item>
+        <item name="android:layout_marginEnd">@dimen/app_button_width_margin</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:backgroundTint">@color/colorAccentBlue</item>
+    </style>
+
+    <style name="CancelButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:paddingTop">@dimen/button_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/button_vertical_padding</item>
+        <item name="android:layout_marginStart">@dimen/app_button_width_margin</item>
+        <item name="android:layout_marginEnd">@dimen/app_button_width_margin</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>
