@@ -10,6 +10,8 @@ import kotlinx.coroutines.withContext
 
 class EditStreamViewModel(app: Application): AndroidViewModel(app) {
     private val db = AppDatabase.getInstance(app.applicationContext)
+    private val _searchItems = MutableLiveData<List<EditorSearchItem>>()
+    val searchItems: LiveData<List<EditorSearchItem>> = _searchItems
     private val _saved = MutableLiveData<Boolean>()
     val saved: LiveData<Boolean> = _saved
 
@@ -18,10 +20,14 @@ class EditStreamViewModel(app: Application): AndroidViewModel(app) {
         _saved.value = false
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                delay(2000)
+                delay(1000)
             }
             _saved.value = true
         }
+    }
+
+    fun getSearchItems(parentStreamId: Long) {
+
     }
 //    fun retrieveNews(keywords: List<SearchItem>) {
 //        val newsList = mutableListOf<NewsItem>()

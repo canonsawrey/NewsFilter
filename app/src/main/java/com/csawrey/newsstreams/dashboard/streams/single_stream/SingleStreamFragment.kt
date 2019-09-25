@@ -52,7 +52,7 @@ class SingleStreamFragment(
 
     private fun setupClickListeners() {
         header.setOnClickListener {
-            EditStreamActivity.launch(requireActivity())
+            EditStreamActivity.launchForResult(requireActivity(), REQUEST_CODE, uid)
         }
     }
 
@@ -116,6 +116,10 @@ class SingleStreamFragment(
     }
 
     companion object {
+        //launchEditForResult
+        const val REQUEST_CODE = 9001
+
+
         val fadeOutTransition = Fade(Fade.OUT)
     }
 }

@@ -28,5 +28,7 @@
     <string name="save">Save</string>
     <string name="clear_story_cache">Clear article cache</string>
     <string name="stream_name">Stream name</string>
+    <string name="empty_name_error">Stream name required</string>
+    <string name="keyword">Keyword(s)</string>
 
 </resources>
