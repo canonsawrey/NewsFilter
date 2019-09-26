@@ -20,10 +20,11 @@ interface EditorItem : Item {
 data class EditorSearchItem (
     private val uid: Long = 0,
     private var keyword: String = "",
-    var sort: Sort = Sort.RELEVANT,
-    var weight: Weight = Weight.AVERAGE,
-    var daysOld: Int = 3,
-    private val created: Long = ZonedDateTime.now().toInstant().toEpochMilli()
+    private var sort: Sort = Sort.RELEVANT,
+    private var weight: Weight = Weight.AVERAGE,
+    private var daysOld: Int = 3,
+    private val created: Long = ZonedDateTime.now().toInstant().toEpochMilli(),
+    private val updateFunc: (Long, String, String, String, Int) -> Unit
 ) : EditorItem {
 
     override fun toDatabaseItem(parentId: Long): DatabaseSearchItem? {
@@ -43,6 +44,31 @@ data class EditorSearchItem (
         holder.itemView.sort_ic.setImageResource(sort.toDrawableResource())
         holder.itemView.weight_ic.setImageResource(weight.toDrawableResource())
         holder.itemView.days_old_value.text = daysOld.toString()
+        setupClickListeners(holder)
+    }
+
+    private fun setupClickListeners(holder: BaseViewHolder) {
+        holder.itemView.sort_ic.setOnClickListener {
+            sort = sort.toNextSort()
+            holder.itemView.sort_ic.setImageResource(sort.toDrawableResource())
+            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+        }
+        holder.itemView.weight_ic.setOnClickListener {
+            weight = weight.toNextWeight()
+            holder.itemView.weight_ic.setImageResource(weight.toDrawableResource())
+            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+        }
+        holder.itemView.days_old_value.setOnClickListener {
+            daysOld = daysOld.toNextDaysOld()
+            holder.itemView.days_old_value.text = daysOld.toString()
+            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+        }
+        holder.itemView.stream_name_value.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                keyword = holder.itemView.stream_name_value.text.toString()
+            }
+            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+        }
     }
 }
 
@@ -52,7 +78,7 @@ class AddItem (
 
     override fun toDatabaseItem(parentId: Long): DatabaseSearchItem? = null
 
-    override fun layoutId(): Int  = R.layout.editor_add_item
+    override fun layoutId(): Int = R.layout.editor_add_item
 
     override fun uniqueId(): Long = -1
 
@@ -63,11 +89,31 @@ class AddItem (
     }
 }
 
-private fun Sort.toPosition(): Int {
+private fun Sort.toNextSort(): Sort {
     return when (this) {
-        Sort.RELEVANT -> 0
-        Sort.RECENT -> 1
-        Sort.POPULAR -> 2
+        Sort.RELEVANT -> Sort.RECENT
+        Sort.RECENT -> Sort.POPULAR
+        Sort.POPULAR -> Sort.RELEVANT
+    }
+}
+
+private fun Weight.toNextWeight(): Weight {
+    return when (this) {
+        Weight.SMALL -> Weight.AVERAGE
+        Weight.AVERAGE -> Weight.LARGE
+        Weight.LARGE -> Weight.SMALL
+    }
+}
+
+private fun Int.toNextDaysOld(): Int {
+    return when (this) {
+        1 -> 2
+        2 -> 3
+        3 -> 5
+        5 -> 7
+        7 -> 14
+        14 -> 1
+        else -> throw IllegalArgumentException("Unrecognized daysOld value: $this")
     }
 }
 
@@ -79,30 +125,10 @@ private fun Sort.toDrawableResource(): Int {
     }
 }
 
-private fun Weight.toPosition(): Int {
-    return when (this) {
-        Weight.SMALL -> 0
-        Weight.AVERAGE -> 1
-        Weight.LARGE -> 2
-    }
-}
-
 private fun Weight.toDrawableResource(): Int {
     return when (this) {
         Weight.SMALL -> R.drawable.ic_low_blue
         Weight.AVERAGE -> R.drawable.ic_neutral_black
         Weight.LARGE -> R.drawable.ic_high_red
-    }
-}
-
-private fun Int.toPosition(): Int {
-    return when (this) {
-        1 -> 0
-        2 -> 1
-        3 -> 2
-        5 -> 3
-        7 -> 4
-        14 -> 5
-        else -> throw IllegalArgumentException("Unrecognized daysOld value: $this")
     }
 }

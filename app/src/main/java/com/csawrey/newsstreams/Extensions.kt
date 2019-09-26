@@ -1,11 +1,9 @@
 package com.csawrey.newsstreams
 
-
 import com.csawrey.newsstreams.common.Sort
 import com.csawrey.newsstreams.common.Weight
 import com.csawrey.newsstreams.dashboard.search.SearchItem
 import com.csawrey.newsstreams.dashboard.streams.single_stream.NewsItem
-import com.csawrey.newsstreams.data.room.CachedResultItemsDao
 import com.csawrey.newsstreams.data.room.DatabaseCachedStoryItem
 import com.csawrey.newsstreams.data.room.DatabaseSearchItem
 

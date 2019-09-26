@@ -67,6 +67,12 @@ class StreamsFragment : Fragment() {
         stream_pager.visibility = View.VISIBLE
     }
 
+    override fun onResume() {
+        super.onResume()
+        showLoadingState()
+        viewModel.retrieveStreams()
+    }
+
     private inner class StreamPagerAdapter(fm: FragmentManager, map: Map<Int, Triple<Long, String, List<SearchItem>>>) :
         FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

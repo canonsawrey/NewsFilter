@@ -17,4 +17,13 @@ interface NewsStreamDao {
 
     @Query("DELETE FROM DatabaseNewsStream")
     fun clearTable()
+
+    @Query("UPDATE DatabaseNewsStream SET name = :name WHERE uid = :streamId")
+    fun updateStreamName(name: String, streamId: Long)
+
+    @Insert
+    suspend fun create(stream: DatabaseNewsStream): Long
+
+    @Query("DELETE FROM DatabaseNewsStream WHERE uid = :streamId")
+    fun delete(streamId: Long)
 }

@@ -1,18 +1,25 @@
 package com.csawrey.newsstreams.edit_stream
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.BaseAdapter
-import com.csawrey.newsstreams.data.room.DatabaseSearchItem
 import kotlinx.android.synthetic.main.activity_edit_stream.*
+import kotlinx.android.synthetic.main.activity_edit_stream.container
+import kotlinx.android.synthetic.main.activity_edit_stream.shimmer
 
 
 class EditStreamActivity : AppCompatActivity() {
@@ -24,60 +31,65 @@ class EditStreamActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_stream)
         viewModel = ViewModelProviders.of(this)[EditStreamViewModel::class.java]
+        setupObservers()
         if (intent.getBooleanExtra(FROM_EXISTING_STREAM, false)) {
             parentStreamId = intent.getLongExtra(STREAM_UID, 0)
             viewModel.getSearchItems(parentStreamId!!)
             showLoading()
         } else {
             displayItems(Pair(baseContext.resources.getString(R.string.my_new_stream), listOf()))
-            parentStreamId = 0
+            viewModel.createStream(NEW_STREAM_NAME)
+            stream_name_value.setText(NEW_STREAM_NAME)
+            showLoading()
         }
-        setupToolbar()
         setupRecycler()
         setupListeners()
-        setupObservers()
     }
 
     private fun showEditor() {
+        TransitionManager.beginDelayedTransition(container, fadeOutTransition)
         shimmer.stopShimmer()
         shimmer.visibility = View.INVISIBLE
-        parameter_recycler.visibility = View.VISIBLE
+        info_container.visibility = View.VISIBLE
     }
 
     private fun showLoading() {
         shimmer.startShimmer()
         shimmer.visibility = View.VISIBLE
-        parameter_recycler.visibility = View.INVISIBLE
+        info_container.visibility = View.INVISIBLE
     }
 
     private fun setupObservers() {
+        viewModel.parentId.observe(this, Observer {
+            parentStreamId = it
+            adapter.submitList(listOf(AddItem { createItem() }))
+            showEditor()
+        })
         viewModel.searchItems.observe(this, Observer { displayItems(it) })
     }
 
     private fun displayItems(data: Pair<String, List<EditorSearchItem>>) {
-        if (data.second.isEmpty()) {
-            adapter.submitList(listOf(
-                EditorSearchItem(),
-                AddItem { addRow() }
-            ))
-        } else {
-            val tempList: MutableList<EditorItem> = data.second.toMutableList()
-            tempList.add(AddItem { addRow() })
-            adapter.submitList(tempList)
-        }
+        val tempList: MutableList<EditorItem> = data.second.toMutableList()
+        tempList.add(AddItem { createItem() })
+        adapter.submitList(tempList)
         stream_name_value.setText(data.first)
         showEditor()
     }
 
-    private fun addRow() {
+    private fun createItem() {
         val list = adapter.currentList.toMutableList()
-        list.add(list.size - 1, EditorSearchItem())
+        list.add(list.size - 1, EditorSearchItem {uid: Long, keyword: String, sort: String, weight: String, daysOld: Int ->
+            viewModel.updateSearchItem(uid, keyword, sort, weight, daysOld)
+        })
         adapter.submitList(list)
     }
 
     private fun setupListeners() {
-        toolbar.setNavigationOnClickListener {
+        nav_back.setOnClickListener {
             backPressed()
+        }
+        delete.setOnClickListener {
+            showDeleteDialog()
         }
         stream_name_value.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -98,10 +110,25 @@ class EditStreamActivity : AppCompatActivity() {
 
     private fun backPressed() {
         if (stream_name_value.text.isNullOrBlank()) {
-            Toast.makeText(baseContext, "Cannot have an empty stream name", Toast.LENGTH_SHORT).show()
+            stream_name_value.error = resources.getString(R.string.cannot_be_blank)
         } else {
-            viewModel.updateStreamName()
+            viewModel.updateStreamName(stream_name_value.text.toString(), parentStreamId!!, this)
         }
+    }
+
+    private fun showDeleteDialog() {
+        val dialog = AlertDialog.Builder(this).create()
+        dialog.setTitle(resources.getString(R.string.delete_stream))
+        dialog.setMessage(resources.getString(R.string.delete_stream_dialog_message))
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, resources.getString(R.string.no)) { dialogInterface, _ -> dialogInterface.cancel() }
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, resources.getString(R.string.yes)) { _, _ -> deleteStream() }
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.colorAccentBlue))
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.red))
+    }
+
+    private fun deleteStream() {
+        viewModel.deleteStream(parentStreamId!!, this)
     }
 
     companion object {
@@ -115,16 +142,21 @@ class EditStreamActivity : AppCompatActivity() {
         //Result extras
         const val TITLE = "title"
 
+        //General constants
+        const val NEW_STREAM_NAME = "My News Stream"
+
         fun launch(activity: Activity) {
             val intent = Intent(activity, EditStreamActivity::class.java)
             activity.startActivity(intent)
         }
 
-        fun launchForResult(activity: Activity, requestCode: Int, streamId: Long) {
+        fun launchExisting(activity: Activity, requestCode: Int, streamId: Long) {
             val intent = Intent(activity, EditStreamActivity::class.java)
             intent.putExtra(FROM_EXISTING_STREAM, true)
             intent.putExtra(STREAM_UID, streamId)
             activity.startActivityForResult(intent, requestCode)
         }
+
+        val fadeOutTransition = Fade(Fade.OUT)
     }
 }

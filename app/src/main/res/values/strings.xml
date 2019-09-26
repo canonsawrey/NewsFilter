@@ -36,6 +36,11 @@
     <string name="weight">Weight</string>
     <string name="add">Add</string>
     <string name="max_story_age">Max Story Age</string>
+    <string name="cannot_be_blank">Cannot be blank</string>
+    <string name="delete_stream">Delete stream?</string>
+    <string name="delete_stream_dialog_message">Are you sure you want to delete this Stream? This is an irreversible action.</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 
 
     <string-array name="sort_array">
