@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.edit_stream.EditStreamActivity
 import kotlinx.android.synthetic.main.fragment_new_stream.*
+import kotlinx.android.synthetic.main.fragment_single_stream_add.*
 
 class NewStreamFragment : Fragment() {
 
@@ -25,7 +26,7 @@ class NewStreamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        add.setOnClickListener {
+        top_view.setOnClickListener {
             EditStreamActivity.launch(requireActivity())
         }
     }

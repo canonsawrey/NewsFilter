@@ -2,9 +2,10 @@ package com.csawrey.newsstreams.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 
-class BaseAdapter<I : Item> : ListAdapter<I, BaseViewHolder>(
+open class BaseAdapter<I : Item> : ListAdapter<I, BaseViewHolder>(
     ItemDiffCallback()
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -32,4 +33,12 @@ class BaseAdapter<I : Item> : ListAdapter<I, BaseViewHolder>(
     override fun getItemId(position: Int): Long = getItem(position).uniqueId()
 
     override fun getItemViewType(position: Int): Int = getItem(position).layoutId()
+
+    fun newSpanSizeLookup(): GridLayoutManager.SpanSizeLookup {
+        return object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return getItem(position).spanSize()
+            }
+        }
+    }
 }

@@ -11,10 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.BaseAdapter
-import com.csawrey.newsstreams.common.Sort
-import com.csawrey.newsstreams.common.Weight
-import com.csawrey.newsstreams.dashboard.search.SearchItem
+import com.csawrey.newsstreams.data.room.DatabaseSearchItem
 import kotlinx.android.synthetic.main.activity_edit_stream.*
+
 
 class EditStreamActivity : AppCompatActivity() {
     private var parentStreamId: Long? = null
@@ -25,40 +24,40 @@ class EditStreamActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_stream)
         viewModel = ViewModelProviders.of(this)[EditStreamViewModel::class.java]
-        setupToolbar()
-        setupRecycler()
-        setupListeners()
-        setupObservers()
         if (intent.getBooleanExtra(FROM_EXISTING_STREAM, false)) {
             parentStreamId = intent.getLongExtra(STREAM_UID, 0)
             viewModel.getSearchItems(parentStreamId!!)
             showLoading()
         } else {
             displayItems(Pair(baseContext.resources.getString(R.string.my_new_stream), listOf()))
+            parentStreamId = 0
         }
+        setupToolbar()
+        setupRecycler()
+        setupListeners()
+        setupObservers()
     }
 
     private fun showEditor() {
         shimmer.stopShimmer()
         shimmer.visibility = View.INVISIBLE
-        editor.visibility = View.VISIBLE
+        parameter_recycler.visibility = View.VISIBLE
     }
 
     private fun showLoading() {
         shimmer.startShimmer()
         shimmer.visibility = View.VISIBLE
-        editor.visibility = View.INVISIBLE
+        parameter_recycler.visibility = View.INVISIBLE
     }
 
     private fun setupObservers() {
-        viewModel.saved.observe(this, Observer { showAnimation(it) })
         viewModel.searchItems.observe(this, Observer { displayItems(it) })
     }
 
     private fun displayItems(data: Pair<String, List<EditorSearchItem>>) {
         if (data.second.isEmpty()) {
             adapter.submitList(listOf(
-                EditorSearchItem(0, "", Sort.RELEVANT, Weight.AVERAGE, 3),
+                EditorSearchItem(),
                 AddItem { addRow() }
             ))
         } else {
@@ -71,16 +70,14 @@ class EditStreamActivity : AppCompatActivity() {
     }
 
     private fun addRow() {
-        Toast.makeText(baseContext, "Adding row! But not really...", Toast.LENGTH_SHORT).show()
+        val list = adapter.currentList.toMutableList()
+        list.add(list.size - 1, EditorSearchItem())
+        adapter.submitList(list)
     }
 
     private fun setupListeners() {
-        save.setOnClickListener {
-            if (stream_name_value.text.toString().isBlank()) {
-                stream_name_value.error = resources.getString(R.string.empty_name_error)
-            } else {
-                viewModel.save()
-            }
+        toolbar.setNavigationOnClickListener {
+            backPressed()
         }
         stream_name_value.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -90,22 +87,22 @@ class EditStreamActivity : AppCompatActivity() {
     }
 
     private fun setupRecycler() {
-        parameter_recycler.layoutManager = LinearLayoutManager(baseContext)
+        val layoutManager = LinearLayoutManager(baseContext)
+        parameter_recycler.layoutManager = layoutManager
         parameter_recycler.adapter = adapter
     }
 
-    private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener {
-            finish()
+    override fun onBackPressed() {
+        backPressed()
+    }
+
+    private fun backPressed() {
+        if (stream_name_value.text.isNullOrBlank()) {
+            Toast.makeText(baseContext, "Cannot have an empty stream name", Toast.LENGTH_SHORT).show()
+        } else {
+            viewModel.updateStreamName()
         }
     }
-
-    private fun showAnimation(it: Boolean) {
-        loading.visibility = if (it) View.INVISIBLE else View.VISIBLE
-        save.visibility = if (it) View.VISIBLE else View.INVISIBLE
-    }
-
-
 
     companion object {
         //Launch extras

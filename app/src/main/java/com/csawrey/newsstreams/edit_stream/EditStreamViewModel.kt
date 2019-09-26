@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.csawrey.newsstreams.dashboard.search.toEditorSearchItem
 import com.csawrey.newsstreams.data.room.AppDatabase
+import com.csawrey.newsstreams.data.room.DatabaseSearchItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,16 +17,7 @@ class EditStreamViewModel(app: Application): AndroidViewModel(app) {
     private val _saved = MutableLiveData<Boolean>()
     val saved: LiveData<Boolean> = _saved
 
-
-    fun save() {
-        _saved.value = false
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                delay(1000)
-            }
-            _saved.value = true
-        }
-    }
+    fun updateTitle()
 
     fun getSearchItems(parentStreamId: Long) {
         viewModelScope.launch {
