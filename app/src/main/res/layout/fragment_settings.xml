@@ -40,7 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/clear_story_cache"
-            style="@style/CancelButton"/>
+            style="@style/ClearOrDeleteButton"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
 
         <ProgressBar
             android:id="@+id/loading"

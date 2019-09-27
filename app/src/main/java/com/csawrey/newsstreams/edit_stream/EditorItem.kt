@@ -1,7 +1,12 @@
 package com.csawrey.newsstreams.edit_stream
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.View
 import android.widget.AdapterView
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.view.marginStart
 import androidx.core.widget.doAfterTextChanged
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.BaseViewHolder
@@ -63,12 +68,30 @@ data class EditorSearchItem (
             holder.itemView.days_old_value.text = daysOld.toString()
             updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
         }
-        holder.itemView.stream_name_value.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                keyword = holder.itemView.stream_name_value.text.toString()
-            }
-            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+        holder.itemView.stream_name_value.setOnClickListener {
+            launchKeywordDialog(holder.itemView.context, holder.itemView.stream_name_value)
         }
+    }
+
+    private fun launchKeywordDialog(context: Context, textView: TextView) {
+        val dialog = AlertDialog.Builder(context).create()
+        dialog.setTitle(context.resources.getString(R.string.edit_keyword))
+        val input = EditText(context)
+        input.setText(keyword)
+        dialog.setView(input)
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, context.resources.getString(R.string.cancel))
+            { dialogInterface, _ -> dialogInterface.cancel() }
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, context.resources.getString(R.string.save))
+            { _, _ ->
+                keyword = input.text.toString()
+                textView.text = keyword
+                updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+            }
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(context.resources.getColor(R.color.red))
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(context.resources.getColor(R.color.colorAccentBlue))
     }
 }
 

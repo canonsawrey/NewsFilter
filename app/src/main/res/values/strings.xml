@@ -41,6 +41,9 @@
     <string name="delete_stream_dialog_message">Are you sure you want to delete this Stream? This is an irreversible action.</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="edit_keyword">Edit keyword(s)</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
 
 
     <string-array name="sort_array">

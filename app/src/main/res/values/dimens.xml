@@ -8,4 +8,5 @@
     <dimen name="card_inset">4dp</dimen>
     <dimen name="low_elevation">5dp</dimen>
     <dimen name="high_elevation">10dp</dimen>
+    <dimen name="dialog_edittext_margin">10dp</dimen>
 </resources>
