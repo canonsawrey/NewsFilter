@@ -27,4 +27,7 @@ interface SearchItemsDao {
     @Query("DELETE FROM DatabaseSearchItem WHERE uid = :uid")
     fun delete(uid: Long)
 
+    @Query("SELECT * FROM DatabaseSearchItem WHERE uid = :id")
+    fun getSearchItem(id: Long): DatabaseSearchItem
+
 }

@@ -32,12 +32,5 @@ enum class Weight {
         }
     }
 
-    fun fromString(str: String): Weight {
-        return when (str) {
-            "small" -> SMALL
-            "average" -> AVERAGE
-            "large" -> LARGE
-            else -> throw IllegalArgumentException("Unrecognized weight: $str")
-        }
-    }
+
 }

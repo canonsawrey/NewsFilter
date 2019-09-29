@@ -64,8 +64,8 @@ class EditStreamViewModel(app: Application): AndroidViewModel(app) {
 
     fun createItem(parentStreamId: Long) {
         viewModelScope.launch {
-            _id.value = withContext(Dispatchers.IO) {
-                db.searchItemsDao().insert(
+            _new.value = withContext(Dispatchers.IO) {
+                val id = db.searchItemsDao().insert(
                     DatabaseSearchItem(
                         0,
                         parentStreamId,
@@ -75,6 +75,7 @@ class EditStreamViewModel(app: Application): AndroidViewModel(app) {
                         3,
                         ZonedDateTime.now().toInstant().toEpochMilli())
                 )
+                db.searchItemsDao().getSearchItem(id)
             }
         }
     }

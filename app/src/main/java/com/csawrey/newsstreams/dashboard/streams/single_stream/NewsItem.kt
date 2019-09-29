@@ -6,11 +6,9 @@ import android.net.Uri
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.csawrey.newsstreams.R
-import com.csawrey.newsstreams.common.BaseViewHolder
-import com.csawrey.newsstreams.common.Item
-import com.csawrey.newsstreams.data.room.DatabaseCachedStoryItem
+import com.csawrey.newsstreams.common.recycler.BaseViewHolder
+import com.csawrey.newsstreams.common.recycler.Item
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class NewsItem (

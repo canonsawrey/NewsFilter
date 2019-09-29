@@ -1,4 +1,4 @@
-package com.csawrey.newsstreams.common
+package com.csawrey.newsstreams.common.recycler
 
 import androidx.annotation.LayoutRes
 

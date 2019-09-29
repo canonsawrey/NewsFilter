@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
-import com.csawrey.newsstreams.common.BaseAdapter
+import com.csawrey.newsstreams.common.recycler.BaseAdapter
 import com.csawrey.newsstreams.common.Sort
 import com.csawrey.newsstreams.common.Weight
 import com.csawrey.newsstreams.dashboard.search.SearchItem

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
-import com.csawrey.newsstreams.common.BaseAdapter
+import com.csawrey.newsstreams.common.recycler.BaseAdapter
 import com.csawrey.newsstreams.data.room.DatabaseSearchItem
 import kotlinx.android.synthetic.main.activity_edit_stream.*
 import kotlinx.android.synthetic.main.activity_edit_stream.container
@@ -77,7 +77,11 @@ class EditStreamActivity : AppCompatActivity() {
 
     private fun acceptCreatedItem(it: DatabaseSearchItem) {
         val list = adapter.currentList.toMutableList()
-        list.add(it.toEditorItem())
+        val item = it.toEditorItem()
+        item.giveUpdateFunc { l, s, s2, s3, i, l2 ->
+            viewModel.updateSearchItem(l, s, s2, s3, i, l2)
+        }
+        list.add(list.size - 1, item)
         adapter.submitList(list)
     }
 

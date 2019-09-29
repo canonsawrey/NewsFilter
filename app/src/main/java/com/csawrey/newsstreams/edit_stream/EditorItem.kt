@@ -2,19 +2,14 @@ package com.csawrey.newsstreams.edit_stream
 
 import android.app.AlertDialog
 import android.content.Context
-import android.view.View
-import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.view.marginStart
-import androidx.core.widget.doAfterTextChanged
 import com.csawrey.newsstreams.R
-import com.csawrey.newsstreams.common.BaseViewHolder
-import com.csawrey.newsstreams.common.Item
+import com.csawrey.newsstreams.common.recycler.BaseViewHolder
+import com.csawrey.newsstreams.common.recycler.Item
 import com.csawrey.newsstreams.common.Sort
 import com.csawrey.newsstreams.common.Weight
 import com.csawrey.newsstreams.data.room.DatabaseSearchItem
-import kotlinx.android.synthetic.main.activity_edit_stream.view.*
 import kotlinx.android.synthetic.main.editor_add_item.view.*
 import kotlinx.android.synthetic.main.editor_search_item.view.*
 import kotlinx.android.synthetic.main.editor_search_item.view.stream_name_value
@@ -22,6 +17,8 @@ import java.time.ZonedDateTime
 
 interface EditorItem : Item {
     fun toDatabaseItem(parentId: Long): DatabaseSearchItem?
+
+    fun giveUpdateFunc(func: ((Long, String, String, String, Int, Long) -> Unit))
 }
 
 data class EditorSearchItem (
@@ -32,7 +29,7 @@ data class EditorSearchItem (
     private var daysOld: Int = 3,
     private val created: Long = ZonedDateTime.now().toInstant().toEpochMilli(),
     private val parentId: Long,
-    private val updateFunc: (Long, String, String, String, Int, Long) -> Unit
+    private var updateFunc: ((Long, String, String, String, Int, Long) -> Unit)?
 ) : EditorItem {
 
     override fun toDatabaseItem(parentId: Long): DatabaseSearchItem? {
@@ -42,6 +39,10 @@ data class EditorSearchItem (
             DatabaseSearchItem(uid, parentId, keyword, sort.toString(), weight.toString(),
                 daysOld, ZonedDateTime.now().toInstant().toEpochMilli())
         }
+    }
+
+    override fun giveUpdateFunc(func: ((Long, String, String, String, Int, Long) -> Unit)) {
+        updateFunc = func
     }
 
     override fun layoutId(): Int = R.layout.editor_search_item
@@ -60,17 +61,17 @@ data class EditorSearchItem (
         holder.itemView.sort_ic.setOnClickListener {
             sort = sort.toNextSort()
             holder.itemView.sort_ic.setImageResource(sort.toDrawableResource())
-            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
+            updateFunc!!.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
         }
         holder.itemView.weight_ic.setOnClickListener {
             weight = weight.toNextWeight()
             holder.itemView.weight_ic.setImageResource(weight.toDrawableResource())
-            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
+            updateFunc!!.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
         }
         holder.itemView.days_old_value.setOnClickListener {
             daysOld = daysOld.toNextDaysOld()
             holder.itemView.days_old_value.text = daysOld.toString()
-            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
+            updateFunc!!.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
         }
         holder.itemView.stream_name_value.setOnClickListener {
             launchKeywordDialog(holder.itemView.context, holder.itemView.stream_name_value)
@@ -89,7 +90,7 @@ data class EditorSearchItem (
             { _, _ ->
                 keyword = input.text.toString()
                 textView.text = keyword
-                updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+                updateFunc!!.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
             }
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
@@ -102,6 +103,8 @@ data class EditorSearchItem (
 class AddItem (
     private val func: () -> Unit
 ) : EditorItem {
+
+    override fun giveUpdateFunc(func: ((Long, String, String, String, Int, Long) -> Unit)) { }
 
     override fun toDatabaseItem(parentId: Long): DatabaseSearchItem? = null
 

@@ -5,8 +5,11 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.csawrey.newsstreams.common.Sort
+import com.csawrey.newsstreams.common.Weight
 import com.csawrey.newsstreams.edit_stream.EditorItem
 import com.csawrey.newsstreams.edit_stream.EditorSearchItem
+import com.csawrey.newsstreams.toSort
+import com.csawrey.newsstreams.toWeight
 
 @Entity
 data class DatabaseNewsStream(
@@ -32,9 +35,12 @@ data class DatabaseSearchItem(
     fun toEditorItem(): EditorItem = EditorSearchItem(
         this.uid,
         this.keyword,
-        Sort.fromString(this.sort),
-
-
+        this.sort.toSort(),
+        this.weight.toWeight(),
+        this.daysOld,
+        this.created,
+        this.parent_stream,
+        null)
 }
 
 @Entity(foreignKeys = [ForeignKey(entity = DatabaseSearchItem::class,

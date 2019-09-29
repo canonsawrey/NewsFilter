@@ -1,6 +1,5 @@
 package com.csawrey.newsstreams.dashboard.settings
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.app.App
-import com.csawrey.newsstreams.common.BaseAdapter
+import com.csawrey.newsstreams.common.recycler.BaseAdapter
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : Fragment() {
-    private val settingsAdapter = BaseAdapter<SettingsItem>()
+    private val settingsAdapter =
+        BaseAdapter<SettingsItem>()
     private lateinit var viewModel: SettingsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

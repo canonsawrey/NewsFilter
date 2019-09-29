@@ -1,8 +1,8 @@
 package com.csawrey.newsstreams.dashboard.settings
 
 import com.csawrey.newsstreams.R
-import com.csawrey.newsstreams.common.BaseViewHolder
-import com.csawrey.newsstreams.common.Item
+import com.csawrey.newsstreams.common.recycler.BaseViewHolder
+import com.csawrey.newsstreams.common.recycler.Item
 import kotlinx.android.synthetic.main.settings_item.view.*
 
 data class SettingsItem(

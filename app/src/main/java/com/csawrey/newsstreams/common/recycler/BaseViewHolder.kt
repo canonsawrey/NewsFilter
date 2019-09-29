@@ -1,4 +1,4 @@
-package com.csawrey.newsstreams.common
+package com.csawrey.newsstreams.common.recycler
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
