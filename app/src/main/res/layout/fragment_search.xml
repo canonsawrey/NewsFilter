@@ -15,6 +15,7 @@
         android:background="@color/colorPrimary">
 
         <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="14dp"
@@ -53,6 +54,15 @@
 
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <TextView
+            android:id="@+id/empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="50dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+            android:text="@string/empty_search_message"/>
 
     </FrameLayout>
 </LinearLayout>

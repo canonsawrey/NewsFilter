@@ -14,8 +14,10 @@ import com.csawrey.newsstreams.common.Item
 import com.csawrey.newsstreams.common.Sort
 import com.csawrey.newsstreams.common.Weight
 import com.csawrey.newsstreams.data.room.DatabaseSearchItem
+import kotlinx.android.synthetic.main.activity_edit_stream.view.*
 import kotlinx.android.synthetic.main.editor_add_item.view.*
 import kotlinx.android.synthetic.main.editor_search_item.view.*
+import kotlinx.android.synthetic.main.editor_search_item.view.stream_name_value
 import java.time.ZonedDateTime
 
 interface EditorItem : Item {
@@ -29,14 +31,16 @@ data class EditorSearchItem (
     private var weight: Weight = Weight.AVERAGE,
     private var daysOld: Int = 3,
     private val created: Long = ZonedDateTime.now().toInstant().toEpochMilli(),
-    private val updateFunc: (Long, String, String, String, Int) -> Unit
+    private val parentId: Long,
+    private val updateFunc: (Long, String, String, String, Int, Long) -> Unit
 ) : EditorItem {
 
     override fun toDatabaseItem(parentId: Long): DatabaseSearchItem? {
         return if (keyword.isBlank()) {
             null
         } else {
-            DatabaseSearchItem(uid, parentId, keyword, sort.toString(), weight.toString(), daysOld)
+            DatabaseSearchItem(uid, parentId, keyword, sort.toString(), weight.toString(),
+                daysOld, ZonedDateTime.now().toInstant().toEpochMilli())
         }
     }
 
@@ -56,17 +60,17 @@ data class EditorSearchItem (
         holder.itemView.sort_ic.setOnClickListener {
             sort = sort.toNextSort()
             holder.itemView.sort_ic.setImageResource(sort.toDrawableResource())
-            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
         }
         holder.itemView.weight_ic.setOnClickListener {
             weight = weight.toNextWeight()
             holder.itemView.weight_ic.setImageResource(weight.toDrawableResource())
-            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
         }
         holder.itemView.days_old_value.setOnClickListener {
             daysOld = daysOld.toNextDaysOld()
             holder.itemView.days_old_value.text = daysOld.toString()
-            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld)
+            updateFunc.invoke(uid, keyword, sort.toString(), weight.toString(), daysOld, parentId)
         }
         holder.itemView.stream_name_value.setOnClickListener {
             launchKeywordDialog(holder.itemView.context, holder.itemView.stream_name_value)

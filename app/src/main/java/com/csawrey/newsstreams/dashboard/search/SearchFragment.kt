@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,13 +13,14 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.BaseAdapter
+import com.csawrey.newsstreams.dashboard.streams.single_stream.NewsItem
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
 
     //@Inject lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: SearchViewModel
-    private val adapter = BaseAdapter<SearchItem>()
+    private val adapter = BaseAdapter<NewsItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,50 +37,58 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.searchItems.observe(viewLifecycleOwner, Observer { receiveList(it) })
-        viewModel.getAllSearchItems()
+        search_bar.setOnQueryTextListener(SearchListener())
+        showEmptyState()
         setupRecycler()
     }
 
-    private fun receiveList(list: List<SearchItem>?) {
-        when (list) {
-            null -> showLoadingState()
-            else -> {
-                if (list.isEmpty()) {
-                    showEmptyState()
-                } else {
-                    adapter.submitList(list)
-                    showPlayers()
-                }
-            }
+    private fun receiveList(list: List<NewsItem>) {
+        if (list.isEmpty()) {
+            showEmptyState()
+        } else {
+            adapter.submitList(list)
+            showNews()
         }
     }
 
-    private fun showPlayers() {
+    private fun showNews() {
         TransitionManager.beginDelayedTransition(container, fadeOutTransition)
-//        loading_state.visibility = View.INVISIBLE
-//        feed_selector_recycler.visibility = View.VISIBLE
-//        empty_state.visibility = View.INVISIBLE
+        shimmer.visibility = View.INVISIBLE
+        news_recycler.visibility = View.VISIBLE
+        empty_state.visibility = View.INVISIBLE
     }
 
     private fun showEmptyState() {
         TransitionManager.beginDelayedTransition(container, fadeOutTransition)
-//        loading_state.visibility = View.INVISIBLE
-//        feed_selector_recycler.visibility = View.INVISIBLE
-//        empty_state.visibility = View.VISIBLE
+        shimmer.visibility = View.INVISIBLE
+        news_recycler.visibility = View.INVISIBLE
+        empty_state.visibility = View.VISIBLE
     }
 
     private fun showLoadingState() {
-//        loading_state.visibility = View.VISIBLE
-//        feed_selector_recycler.visibility = View.INVISIBLE
-//        empty_state.visibility = View.INVISIBLE
+        shimmer.visibility = View.VISIBLE
+        news_recycler.visibility = View.INVISIBLE
+        empty_state.visibility = View.INVISIBLE
     }
 
     private fun setupRecycler() {
-//        feed_selector_recycler.layoutManager = LinearLayoutManager(requireContext())
-//        feed_selector_recycler.adapter = adapter
+        news_recycler.layoutManager = LinearLayoutManager(requireContext())
+        news_recycler.adapter = adapter
     }
 
     companion object {
         val fadeOutTransition = Fade(Fade.OUT)
+    }
+
+    inner class SearchListener : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            query?.let {
+                viewModel.search(it)
+                showLoadingState()
+            }
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean { return true }
     }
 }

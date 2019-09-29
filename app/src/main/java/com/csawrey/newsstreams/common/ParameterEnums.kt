@@ -10,6 +10,15 @@ enum class Sort {
             RECENT -> "publishedAt"
         }
     }
+
+    fun fromString(str: String): Sort {
+        return when (str) {
+            "relevancy" -> RELEVANT
+            "popularity" -> POPULAR
+            "publishedAt" -> RECENT
+            else -> throw IllegalArgumentException("Unrecognized sort: $str")
+        }
+    }
 }
 
 enum class Weight {
@@ -20,6 +29,15 @@ enum class Weight {
             SMALL -> "small"
             AVERAGE -> "average"
             LARGE -> "large"
+        }
+    }
+
+    fun fromString(str: String): Weight {
+        return when (str) {
+            "small" -> SMALL
+            "average" -> AVERAGE
+            "large" -> LARGE
+            else -> throw IllegalArgumentException("Unrecognized weight: $str")
         }
     }
 }

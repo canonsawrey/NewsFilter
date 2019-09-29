@@ -44,27 +44,9 @@
     <string name="edit_keyword">Edit keyword(s)</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
-
-
-    <string-array name="sort_array">
-        <item>Relevant</item>
-        <item>Recent</item>
-        <item>Popular</item>
-    </string-array>
-
-    <string-array name="weight_array">
-        <item>Small</item>
-        <item>Average</item>
-        <item>Large</item>
-    </string-array>
-
-    <string-array name="days_old_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>5</item>
-        <item>7</item>
-        <item>14</item>
-    </string-array>
-
+    <string name="empty_search_message">Search for articles! \n\n\nIf you have already submitted a search, try different keywords, as no results were returned.</string>
+    <string name="ok">Ok</string>
+    <string name="edit_stream_help">Stream editor help</string>
+    <string name="edit_stream_key">Stream editor key:</string>
+    <string name="key">Key</string>
 </resources>

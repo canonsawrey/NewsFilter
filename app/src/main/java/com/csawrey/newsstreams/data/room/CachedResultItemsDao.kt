@@ -14,4 +14,7 @@ interface CachedResultItemsDao {
 
     @Query("DELETE FROM DatabaseCachedStoryItem")
     fun clearTable()
+
+    @Query("DELETE FROM DatabaseCachedStoryItem WHERE `parent_search_item` = :parentId")
+    fun removeStaleStories(parentId: Long)
 }

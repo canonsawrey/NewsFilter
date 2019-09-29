@@ -1,6 +1,7 @@
 package com.csawrey.newsstreams.data.newsapi
 
 import com.csawrey.newsstreams.data.room.DatabaseCachedStoryItem
+import java.time.ZonedDateTime
 
 data class NewsApiItem(
     val status: String,
@@ -20,7 +21,8 @@ data class NewsApiItem(
                         i.title,
                         i.description,
                         i.url,
-                        i.urlToImage
+                        i.urlToImage,
+                        ZonedDateTime.now().toInstant().toEpochMilli()
                     )
                 )
             }

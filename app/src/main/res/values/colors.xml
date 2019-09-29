@@ -4,13 +4,14 @@
     <color name="colorPrimary">#111111</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#ffffff</color>
+    <color name="colorAccentBlueVeryLight">#64b5f6</color>
     <color name="colorAccentBlueLight">#2196f3</color>
     <color name="colorAccentBlue">#1976d2</color>
     <color name="colorAccentBlueDark">#0d47a1</color>
     <color name="white">#ffffff</color>
     <color name="grey">#d3d3d3</color>
+    <color name="greyDark">#aaaaaa</color>
     <color name="transparent">#00000000</color>
-    <color name="transparent_background">#99ffffff</color>
     <color name="red">#ff0000</color>
     <!--    <color name="colorPrimary">#38003c</color>-->
     <!--    <color name="colorPrimaryDark">#1F0023</color>-->

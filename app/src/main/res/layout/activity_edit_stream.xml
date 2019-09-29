@@ -76,12 +76,27 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/parameter_recycler"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/editor_search_item"
-                tools:itemCount="5"/>
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/parameter_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/editor_search_item" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="@drawable/ic_info_white"
+                    android:backgroundTint="@color/colorAccentBlueVeryLight"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="start|bottom"/>
+            </FrameLayout>
+
 
         </LinearLayout>
 

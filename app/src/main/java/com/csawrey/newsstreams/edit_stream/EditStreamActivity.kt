@@ -2,14 +2,11 @@ package com.csawrey.newsstreams.edit_stream
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +14,7 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.BaseAdapter
+import com.csawrey.newsstreams.data.room.DatabaseSearchItem
 import kotlinx.android.synthetic.main.activity_edit_stream.*
 import kotlinx.android.synthetic.main.activity_edit_stream.container
 import kotlinx.android.synthetic.main.activity_edit_stream.shimmer
@@ -62,25 +60,24 @@ class EditStreamActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.parentId.observe(this, Observer {
             parentStreamId = it
-            adapter.submitList(listOf(AddItem { createItem() }))
+            adapter.submitList(listOf(AddItem { viewModel.createItem(parentStreamId!!) }))
             showEditor()
         })
         viewModel.searchItems.observe(this, Observer { displayItems(it) })
+        viewModel.new.observe(this, Observer { acceptCreatedItem(it) })
     }
 
     private fun displayItems(data: Pair<String, List<EditorSearchItem>>) {
         val tempList: MutableList<EditorItem> = data.second.toMutableList()
-        tempList.add(AddItem { createItem() })
+        tempList.add(AddItem { viewModel.createItem(parentStreamId!!) })
         adapter.submitList(tempList)
         stream_name_value.setText(data.first)
         showEditor()
     }
 
-    private fun createItem() {
+    private fun acceptCreatedItem(it: DatabaseSearchItem) {
         val list = adapter.currentList.toMutableList()
-        list.add(list.size - 1, EditorSearchItem {uid: Long, keyword: String, sort: String, weight: String, daysOld: Int ->
-            viewModel.updateSearchItem(uid, keyword, sort, weight, daysOld)
-        })
+        list.add(it.toEditorItem())
         adapter.submitList(list)
     }
 
@@ -96,6 +93,20 @@ class EditStreamActivity : AppCompatActivity() {
                 stream_name_value.error = null
             }
         }
+        info.setOnClickListener {
+            launchInfoDialog()
+        }
+    }
+
+    private fun launchInfoDialog() {
+        val dialog = AlertDialog.Builder(this).create()
+        val imgView = ImageView(baseContext)
+        dialog.setTitle(resources.getString(R.string.key))
+        imgView.setImageResource(R.drawable.editor_key)
+        dialog.setView(imgView)
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, resources.getString(R.string.ok)) { dialogInterface, _ -> dialogInterface.cancel() }
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorAccentBlue))
     }
 
     private fun setupRecycler() {
@@ -144,6 +155,7 @@ class EditStreamActivity : AppCompatActivity() {
 
         //General constants
         const val NEW_STREAM_NAME = "My News Stream"
+        const val NEW_PARAM_NAME = "New Term"
 
         fun launch(activity: Activity) {
             val intent = Intent(activity, EditStreamActivity::class.java)

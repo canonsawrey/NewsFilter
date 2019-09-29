@@ -50,10 +50,11 @@ class StreamsFragment : Fragment() {
     }
 
     private fun receiveNewsList(map: Map<Int, Triple<Long, String, List<SearchItem>>>) {
-        if (map.keys.isNotEmpty()) {
-            setupViewPager(map)
-            showNews()
-        }
+//        if (map.keys.isNotEmpty()) {
+//
+//        }
+        setupViewPager(map)
+        showNews()
     }
 
     private fun showLoadingState() {
