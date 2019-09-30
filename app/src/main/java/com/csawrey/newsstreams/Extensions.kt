@@ -30,8 +30,3 @@ fun String.toWeight(): Weight {
         else -> throw IllegalArgumentException("Unrecognized weight string: $this")
     }
 }
-
-fun toDoList() {
-    TODO("Add 'powered by newsapi' or w.e.t.f. they wanted")
-    TODO("Hide API key")
-}

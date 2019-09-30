@@ -51,4 +51,5 @@
     <string name="key">Key</string>
     <string name="help">Help</string>
     <string name="question_mark">\?</string>
+    <string name="news_api_attribution">Powered by NewsAPI.org</string>
 </resources>
