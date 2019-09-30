@@ -2,6 +2,7 @@ package com.csawrey.newsstreams.dashboard.streams.single_stream
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.csawrey.newsstreams.common.Weight
 import com.csawrey.newsstreams.dashboard.search.SearchItem
 import com.csawrey.newsstreams.data.newsapi.NewsApiRepository
 import com.csawrey.newsstreams.data.room.AppDatabase
@@ -16,7 +17,7 @@ class SingleStreamViewModel(app: Application): AndroidViewModel(app) {
     val news: LiveData<List<NewsItem>> = _news
 
     fun retrieveNews(searchItems: List<SearchItem>) {
-        val newsList = mutableListOf<NewsItem>()
+        val buildList = mutableListOf<Pair<Weight, List<NewsItem>>>()
 
         viewModelScope.launch {
             for (searchItem in searchItems) {
@@ -26,18 +27,31 @@ class SingleStreamViewModel(app: Application): AndroidViewModel(app) {
                 }
 
                 if (stories.isEmpty()) {
-                    newsList.addAll(queryApiAndStore(searchItem))
+                    buildList.add(Pair(searchItem.weight, queryApiAndStore(searchItem)))
                 } else {
-                    newsList.addAll(stories.map { it.toNewsItem() })
+                    buildList.add(Pair(searchItem.weight, stories.map { it.toNewsItem() }))
                 }
             }
-            receiveNews(newsList)
+            buildNews(buildList)
         }
     }
 
 
-    private fun receiveNews(list: List<NewsItem>) {
-        _news.value = list
+    private fun buildNews(buildList: List<Pair<Weight, List<NewsItem>>>) {
+        val newsList = mutableListOf<NewsItem>()
+
+        for (i in 0..5) {
+            for (pair in buildList) {
+                val storyCount = pair.first.toStoryCount()
+                for (j in 0.until(storyCount)) {
+                    if (pair.second.size > i * storyCount + j) {
+                        newsList.add(pair.second[i * storyCount + j])
+                    }
+                }
+            }
+        }
+
+        _news.value = newsList
     }
 
     private suspend fun queryApiAndStore(keyword: SearchItem): List<NewsItem> {

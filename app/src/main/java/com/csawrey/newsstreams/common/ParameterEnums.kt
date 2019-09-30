@@ -32,5 +32,13 @@ enum class Weight {
         }
     }
 
+    fun toStoryCount(): Int {
+        return when (this) {
+            SMALL -> 1
+            AVERAGE -> 2
+            LARGE -> 3
+        }
+    }
+
 
 }
