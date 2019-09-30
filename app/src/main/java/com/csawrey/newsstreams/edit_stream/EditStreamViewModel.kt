@@ -93,7 +93,7 @@ class EditStreamViewModel(app: Application): AndroidViewModel(app) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 db.searchItemsDao().update(uid, keyword, sort, weight, daysOld)
-                db.cachedResultItemDao().removeStaleStories(parentStreamId)
+                db.cachedResultItemDao().removeStaleStories(uid)
             }
         }
     }

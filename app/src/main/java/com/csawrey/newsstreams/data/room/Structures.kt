@@ -4,9 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.csawrey.newsstreams.common.Sort
-import com.csawrey.newsstreams.common.Weight
-import com.csawrey.newsstreams.edit_stream.EditorItem
 import com.csawrey.newsstreams.edit_stream.EditorSearchItem
 import com.csawrey.newsstreams.toSort
 import com.csawrey.newsstreams.toWeight
@@ -32,7 +29,7 @@ data class DatabaseSearchItem(
     @ColumnInfo(name = "daysOld") val daysOld: Int,
     @ColumnInfo(name = "created") val created: Long
 ) {
-    fun toEditorItem(): EditorItem = EditorSearchItem(
+    fun toEditorItem(): EditorSearchItem = EditorSearchItem(
         this.uid,
         this.keyword,
         this.sort.toSort(),

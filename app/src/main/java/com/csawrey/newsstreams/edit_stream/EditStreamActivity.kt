@@ -9,11 +9,14 @@ import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.recycler.BaseAdapter
+import com.csawrey.newsstreams.common.recycler.SwipeToDeleteAdapter
+import com.csawrey.newsstreams.common.recycler.SwipeToDeleteCallback
 import com.csawrey.newsstreams.data.room.DatabaseSearchItem
 import kotlinx.android.synthetic.main.activity_edit_stream.*
 import kotlinx.android.synthetic.main.activity_edit_stream.container
@@ -23,12 +26,13 @@ import kotlinx.android.synthetic.main.activity_edit_stream.shimmer
 class EditStreamActivity : AppCompatActivity() {
     private var parentStreamId: Long? = null
     private lateinit var viewModel: EditStreamViewModel
-    private val adapter = BaseAdapter<EditorItem>()
+    private lateinit var adapter : SwipeToDeleteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_stream)
         viewModel = ViewModelProviders.of(this)[EditStreamViewModel::class.java]
+        adapter = SwipeToDeleteAdapter(viewModel)
         setupObservers()
         if (intent.getBooleanExtra(FROM_EXISTING_STREAM, false)) {
             parentStreamId = intent.getLongExtra(STREAM_UID, 0)
@@ -60,7 +64,7 @@ class EditStreamActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.parentId.observe(this, Observer {
             parentStreamId = it
-            adapter.submitList(listOf(AddItem { viewModel.createItem(parentStreamId!!) }))
+            adapter.submitList(listOf())
             showEditor()
         })
         viewModel.searchItems.observe(this, Observer { displayItems(it) })
@@ -68,9 +72,7 @@ class EditStreamActivity : AppCompatActivity() {
     }
 
     private fun displayItems(data: Pair<String, List<EditorSearchItem>>) {
-        val tempList: MutableList<EditorItem> = data.second.toMutableList()
-        tempList.add(AddItem { viewModel.createItem(parentStreamId!!) })
-        adapter.submitList(tempList)
+        adapter.submitList(data.second)
         stream_name_value.setText(data.first)
         showEditor()
     }
@@ -81,7 +83,7 @@ class EditStreamActivity : AppCompatActivity() {
         item.giveUpdateFunc { l, s, s2, s3, i, l2 ->
             viewModel.updateSearchItem(l, s, s2, s3, i, l2)
         }
-        list.add(list.size - 1, item)
+        list.add(item)
         adapter.submitList(list)
     }
 
@@ -100,23 +102,17 @@ class EditStreamActivity : AppCompatActivity() {
         info.setOnClickListener {
             launchInfoDialog()
         }
-    }
-
-    private fun launchInfoDialog() {
-        val dialog = AlertDialog.Builder(this).create()
-        val imgView = ImageView(baseContext)
-        dialog.setTitle(resources.getString(R.string.key))
-        imgView.setImageResource(R.drawable.editor_key)
-        dialog.setView(imgView)
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, resources.getString(R.string.ok)) { dialogInterface, _ -> dialogInterface.cancel() }
-        dialog.show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorAccentBlue))
+        add.setOnClickListener {
+            viewModel.createItem(parentStreamId!!)
+        }
     }
 
     private fun setupRecycler() {
         val layoutManager = LinearLayoutManager(baseContext)
         parameter_recycler.layoutManager = layoutManager
         parameter_recycler.adapter = adapter
+        val touchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter))
+        touchHelper.attachToRecyclerView(parameter_recycler)
     }
 
     override fun onBackPressed() {
@@ -140,6 +136,17 @@ class EditStreamActivity : AppCompatActivity() {
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.colorAccentBlue))
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.red))
+    }
+
+    private fun launchInfoDialog() {
+        val dialog = AlertDialog.Builder(this).create()
+        val imgView = ImageView(baseContext)
+        dialog.setTitle(resources.getString(R.string.key))
+        imgView.setImageResource(R.drawable.editor_key)
+        dialog.setView(imgView)
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, resources.getString(R.string.ok)) { dialogInterface, _ -> dialogInterface.cancel() }
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.colorAccentBlue))
     }
 
     private fun deleteStream() {

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.view.setPadding
 import com.csawrey.newsstreams.R
 import com.csawrey.newsstreams.common.recycler.BaseViewHolder
 import com.csawrey.newsstreams.common.recycler.Item
@@ -15,12 +16,6 @@ import kotlinx.android.synthetic.main.editor_search_item.view.*
 import kotlinx.android.synthetic.main.editor_search_item.view.stream_name_value
 import java.time.ZonedDateTime
 
-interface EditorItem : Item {
-    fun toDatabaseItem(parentId: Long): DatabaseSearchItem?
-
-    fun giveUpdateFunc(func: ((Long, String, String, String, Int, Long) -> Unit))
-}
-
 data class EditorSearchItem (
     private val uid: Long = 0,
     private var keyword: String = "",
@@ -30,9 +25,9 @@ data class EditorSearchItem (
     private val created: Long = ZonedDateTime.now().toInstant().toEpochMilli(),
     private val parentId: Long,
     private var updateFunc: ((Long, String, String, String, Int, Long) -> Unit)?
-) : EditorItem {
+) : Item {
 
-    override fun toDatabaseItem(parentId: Long): DatabaseSearchItem? {
+    fun toDatabaseItem(parentId: Long): DatabaseSearchItem? {
         return if (keyword.isBlank()) {
             null
         } else {
@@ -41,9 +36,11 @@ data class EditorSearchItem (
         }
     }
 
-    override fun giveUpdateFunc(func: ((Long, String, String, String, Int, Long) -> Unit)) {
+    fun giveUpdateFunc(func: ((Long, String, String, String, Int, Long) -> Unit)) {
         updateFunc = func
     }
+
+    fun getId(): Long = uid
 
     override fun layoutId(): Int = R.layout.editor_search_item
 
@@ -97,25 +94,6 @@ data class EditorSearchItem (
             .setTextColor(context.resources.getColor(R.color.red))
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
             .setTextColor(context.resources.getColor(R.color.colorAccentBlue))
-    }
-}
-
-class AddItem (
-    private val func: () -> Unit
-) : EditorItem {
-
-    override fun giveUpdateFunc(func: ((Long, String, String, String, Int, Long) -> Unit)) { }
-
-    override fun toDatabaseItem(parentId: Long): DatabaseSearchItem? = null
-
-    override fun layoutId(): Int = R.layout.editor_add_item
-
-    override fun uniqueId(): Long = -1
-
-    override fun bind(holder: BaseViewHolder) {
-        holder.itemView.add_button.setOnClickListener {
-            func.invoke()
-        }
     }
 }
 

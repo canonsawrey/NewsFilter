@@ -13,7 +13,6 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun searchItemsDao(): SearchItemsDao
     abstract fun cachedResultItemDao(): CachedResultItemsDao
 
-
     companion object {
         private var INSTANCE: AppDatabase? = null
 

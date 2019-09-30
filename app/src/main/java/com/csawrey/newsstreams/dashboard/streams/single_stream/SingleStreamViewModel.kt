@@ -15,18 +15,18 @@ class SingleStreamViewModel(app: Application): AndroidViewModel(app) {
     private val _news = MutableLiveData<List<NewsItem>>()
     val news: LiveData<List<NewsItem>> = _news
 
-    fun retrieveNews(keywords: List<SearchItem>) {
+    fun retrieveNews(searchItems: List<SearchItem>) {
         val newsList = mutableListOf<NewsItem>()
 
         viewModelScope.launch {
-            for (keyword in keywords) {
+            for (searchItem in searchItems) {
 
                 val stories = withContext(Dispatchers.IO) {
-                    db.cachedResultItemDao().getStoredQueryResults(keyword.uid)
+                    db.cachedResultItemDao().getStoredQueryResults(searchItem.uid)
                 }
 
                 if (stories.isEmpty()) {
-                    newsList.addAll(queryApiAndStore(keyword))
+                    newsList.addAll(queryApiAndStore(searchItem))
                 } else {
                     newsList.addAll(stories.map { it.toNewsItem() })
                 }
